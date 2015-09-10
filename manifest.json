@@ -3,16 +3,13 @@
 
   "name": "Course Selection Extension",
   "description": "This extension adds features to the Bucknell University Course Selection Page",
-  "version": "1.0",
+  "version": "0.1.1",
 
-  "page_action": {
-    "default_icon": "images/icon.png",
-    "default_title": "Course Selection Extension"
-  },
-
-  "permissions": [
-    "activeTab",
-    "https://ajax.googleapis.com/",
-    "https://www.banner.bucknell.edu/BANPRD/*"
+  "content_scripts": [
+    {
+      "matches": ["https://www.banner.bucknell.edu/BANPRD/*"],
+      "css": ["style.css"],
+      "js": ["jquery.min.js", "sidebar.js"]
+    }
   ]
 }
