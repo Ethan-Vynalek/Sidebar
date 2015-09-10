@@ -1,8 +1,3 @@
-console.log("HELLO WORLD");
+console.log("Start of Extension");
 
-$('body').append('<h1>TEST</h1>');
-
-$(".button").each(function(index) {
-	console.log("button found");
-	$(this).append("<h1>HELLO</h1>");
-});
+$("tr input.button").after('<input type="submit" value="Add to Calendar" class="button calendar"></input>');
