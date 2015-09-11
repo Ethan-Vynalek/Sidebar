@@ -5,6 +5,10 @@
   "description": "This extension adds features to the Bucknell University Course Selection Page",
   "version": "0.1.1",
 
+  "browser_action": {
+    "default_icon": "Images/icon.png"
+  },
+
   "content_scripts": [
     {
       "matches": ["https://www.banner.bucknell.edu/BANPRD/*"],
