@@ -1,0 +1,11 @@
+//for creating branch
+git checkout -b [branch name]
+//for changing a branch
+git checkout [branch name]
+git fetch 
+git pull origin [ branch name]
+//
+git add -A
+//start to work on  
+git rebase
+
