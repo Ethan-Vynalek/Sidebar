@@ -1,7 +1,18 @@
 console.log("Start of Extension"); // for debugging purposes
 
-// Table Headers
-// $("tbody th:last").css("padding-left", "20px");
+// Highlight Hovered TRs
+$("#coursetable tbody tr td:first-child").each(function(index) {
+	if(typeof $(this).attr("colspan") == "undefined") {
+		$(this).parent().hover(
+			function() {
+				$(this).css("background-color", "#FEFFCC");
+			},
+			function() {
+				$(this).css("background-color", "");
+			}
+	);
+	}
+});
 
 // Table header
 $("#coursetable tbody tr:first th:last").after("<th class='ddlabel' scope='row'>Add To<br>Calendar</th>");
@@ -16,4 +27,3 @@ $lastTD.each(function(index) {
 		$(this).after("<input type='submit' value='Add to Calendar' class='button'>");
 	}
 });
-asjdflkasjdf
