@@ -1,7 +1,7 @@
 /* ------------------------------- TABS ----------------------------- */
 .tabs {
     width:100%;
-    display:inline-block;
+    display:block;
 }
 
     /* --------------- Tab Links --------------- */
@@ -21,9 +21,9 @@
         .tab-links a {
             padding:9px 15px;
             display:inline-block;
-            border-radius:3px 3px 3px 0px
-            background:#7FB5DA:
-            font-size:16p;
+            border-radius:3px 3px 3px 0px;
+            background:#7FB5DA;
+            font-size:16px;
             font-weight:600;
             color:#4C4C4C;
             transition:all linear 0.15s;
