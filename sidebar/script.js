@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
 
-    jQuery('.tabs .tab_links a').on( 'click', function(e) {
+    jQuery('.tabs .tab-links a').on( 'click', function(e) {
         var currentAttrValue = jQuery(this).attr('href');
 
         // Show/Hide tabs
