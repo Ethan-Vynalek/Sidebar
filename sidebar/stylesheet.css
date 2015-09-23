@@ -11,13 +11,18 @@
 }
 
 .weekday {
-    width: 12.5%;
+    width: 12%;
     float: left;
+    border:1px solid gray;
+}
+
+.timeslot {
+    background: #DDD !important;
 }
 
 #timeslot {
-    font-weight: bold;
-    background-color: #DDD !important;
+    //font-weight: bold;
+    background: #DDD !important;
 }
 
 
@@ -69,7 +74,7 @@
         padding:15px;
         border-radius:3px;
         box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
-        background:#FFF;
+        background:#DDD;
     }
 
         .tab {
