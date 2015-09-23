@@ -5,13 +5,19 @@
 
 .timebox {
     width: 100%;
-    height: 50px;
-    border: blue;
+    height: 40px;
+    background: white;
+    border:1px solid gray;
 }
 
 .weekday {
-    width: 14.2%;
+    width: 12.5%;
     float: left;
+}
+
+#timeslot {
+    font-weight: bold;
+    background-color: #DDD !important;
 }
 
 
