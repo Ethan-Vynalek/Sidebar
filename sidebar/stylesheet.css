@@ -23,7 +23,8 @@
 
 /* ------------------------------- TABS ----------------------------- */
 .tabs {
-    display:inline-block;
+    width:100%;
+    display:block;
     border-left: 2px;
     background: #DDD;
 }
@@ -50,9 +51,9 @@
         .tab-links a {
             padding:9px 15px;
             display:inline-block;
-            border-radius:3px 3px 3px 0px
-            background:#7FB5DA:
-            font-size:16p;
+            border-radius:3px 3px 3px 0px;
+            background:#7FB5DA;
+            font-size:16px;
             font-weight:600;
             color:#4C4C4C;
             transition:all linear 0.15s;
