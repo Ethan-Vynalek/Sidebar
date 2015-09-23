@@ -1,7 +1,31 @@
+#sidebar {
+    width: 600px;
+    float: right;
+}
+
+.timebox {
+    width: 100%;
+    height: 50px;
+    border: blue;
+}
+
+.weekday {
+    width: 14.2%;
+    float: left;
+}
+
+
 /* ------------------------------- TABS ----------------------------- */
 .tabs {
     width:100%;
     display:block;
+    border-left: 2px;
+    background: #DDD;
+}
+
+.extra {
+    width: auto;
+    float: left;
 }
 
     /* --------------- Tab Links --------------- */
