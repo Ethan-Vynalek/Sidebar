@@ -1,6 +1,7 @@
 #sidebar {
-    width: 600px;
+    width: 30%;
     float: right;
+    margin-top: 90px;
 }
 
 .timebox {
