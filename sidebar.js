@@ -24,8 +24,25 @@ $lastTD.each(function(index) {
 		$(this).attr("colspan", "14");
 	}
 	else if($(this).children(0).prop("tagName") === "FORM"){
-		$(this).after("<input type='submit' value='Add to Calendar' class='button'>");
+		$(this).after("<input type='submit' value='Add to Calendar' class='button atcbutton'>");
 	}
+});
+
+// Clicking on "Add to Calendar"
+$(".atcbutton").click(function(){
+	var tds = $(this).parent("tr").children();
+	var classObj = {};
+	classObj.CRN = tds[0].textContent;
+	classObj.course = tds[1].textContent;
+	classObj.title = tds[2].textContent;
+	classObj.time = tds[3].textContent.split("\n");
+	classObj.room = tds[4].textContent;
+	classObj.instructor = tds[5].textContent;
+	classObj.seatsAvail = tds[6].textContent;
+	classObj.seatsRes = tds[7].textContent;
+	classObj.prm = tds[8].textContent;
+	classObj.CCC = tds[9].textContent;
+	console.log(classObj);
 });
 
 // Minified sidebar
