@@ -60,3 +60,15 @@
     width: auto;
     float: left;
 }
+
+.buttonstyle {
+    background: #D5DDE7;
+    color: #5282AA;
+    display: inline-block;
+    font-size: 14px;
+    padding: 20px 30px;
+    font-family: "Avenir W01", sans-serif;
+    box-shadow: none !important;
+}
+
+
