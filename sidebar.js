@@ -54,6 +54,45 @@ $("#print").click(function(){
 	printStorage();
 });
 
+// Parses an array of time strings and returns an array of strings corresponding to the
+// ids of the div elements for that time string.
+// Accepts an array of time strings in the form: ["TR 9:30-10:52am", "T 11:00-11:52am"]
+var parseTime = function(timeStrings) {
+	var i, divs;
+	for (i in timeStrings) {
+		var timeString = timeStrings[i].split(" ");
+		var days = timeString[0];
+		var times = timeString[1];
+		var char, prefix, start, end, ampm;
+		for (char in days){
+			var day = days[char];
+			switch (day) {
+				case "M":
+					prefix = "#mon";
+					break;
+				case "T":
+					prefix = "#tues";
+					break;
+				case "W":
+					prefix = "#wed";
+					break;
+				case "R":
+					prefix = "#thurs";
+					break;
+				case "F":
+					prefix = "#fri";
+					break;
+			}
+			start = times.split("-")[0];
+			end = times.split("-")[1].substring(0, times.split("-")[1].length - 2);
+			ampm = times.split("-")[1].slice(-2);
+			prefix += start.split(":")[0];
+			console.log(prefix);
+		}
+
+	}
+};
+
 // Clicking on "Add to Calendar" will create a course object of the current
 // class and then add that object to chrome's sync storage.
 $(".atcbutton").click(function(){
@@ -79,6 +118,10 @@ $(".atcbutton").click(function(){
 			printStorage();
 		});
 	});
+
+	// Adding the class to the calendar
+	var times = classObj.time.substring(1, classObj.time.length - 1).split("|");
+	parseTime(times);
 });
 
 // *** END CHROME SYNC STORAGE ***
