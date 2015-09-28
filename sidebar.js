@@ -28,21 +28,23 @@ $lastTD.each(function(index) {
 	}
 });
 
-// Storage settings
-
+// *** START CHROME SYNC STORAGE ***
 var obj = {};
 var storage = chrome.storage.sync;
 
+// Clears the sync storage
 var clearStorage = function() {
 	storage.clear();
 	obj = {'classesStored': 0};
 	storage.set(obj);
 };
 
+// Prints the sync storage object
 var printStorage = function() {
 	storage.get(function(result){console.log(result);});
 };
 
+// TEMPORARY buttons to show and clear the storage for testing purposes
 $('.page_header').after('<button id="clear">clear storage</button><button id="print">print storage</button>');
 $('#clear').click(function(){
 	clearStorage();
@@ -52,14 +54,9 @@ $("#print").click(function(){
 	printStorage();
 });
 
-// Clicking on "Add to Calendar"
+// Clicking on "Add to Calendar" will create a course object of the current
+// class and then add that object to chrome's sync storage.
 $(".atcbutton").click(function(){
-	var classesStored;
-	// can't access classesStored value...
-	storage.get('classesStored', function(result){
-		console.log(classesStored);
-		classesStored = result;
-	});
 	var tds = $(this).parent("tr").children();
 	var classObj = {};
 	classObj.CRN = tds[0].textContent.trim();
@@ -72,13 +69,19 @@ $(".atcbutton").click(function(){
 	classObj.seatsRes = tds[7].textContent.trim();
 	classObj.prm = tds[8].textContent.trim();
 	classObj.CCC = tds[9].textContent.trim();
-	obj[classesStored] = classObj;
-	classesStored++;
-	obj.classesStored = classesStored;
-	storage.set(obj, function() {
-		printStorage();
+
+	storage.get(function(result){
+		var classesStored = result.classesStored;
+		obj[classesStored] = classObj;
+		classesStored++;
+		obj.classesStored = classesStored;
+		storage.set(obj, function() {
+			printStorage();
+		});
 	});
 });
+
+// *** END CHROME SYNC STORAGE ***
 
 // Minified sidebar
 var sidebarHTML = '<div id="sidebar"> <div class="tabs"> <ul class="tab-links nav nav-pills nav-stacked"> <li class="active"><a href="#calendar">Calendar</a></li><li><a href="#port_controls">Import/Export</a></li><li><a href="#sharing">Share with Friends</a></li><li><a href="#CRNs">CRN Clipboard</a></li></ul> <div class="tab-content"> <div id="port_controls" class="tab"> <input type="submit" value="Import" class="button"> <input type="submit" value="Export" class="button"> </div><div id="calendar" class="active"> <div id="timeslot" class="weekday timeslot"> <div id="mainTime" class="timebox timeslot th">Time</div><div id="main8AM" class="timebox timeslot">8AM</div><div id="main9AM" class="timebox timeslot">9AM</div><div id="main10AM" class="timebox timeslot">10AM</div><div id="main11AM" class="timebox timeslot">11AM</div><div id="main12PM" class="timebox timeslot">12PM</div><div id="main1PM" class="timebox timeslot">1PM</div><div id="main2PM" class="timebox timeslot">2PM</div><div id="main3PM" class="timebox timeslot">3PM</div><div id="main4PM" class="timebox timeslot">4PM</div><div id="main5PM" class="timebox timeslot">5PM</div><div id="main6PM" class="timebox timeslot">6PM</div><div id="main7PM" class="timebox timeslot">7PM</div><div id="main8PM" class="timebox timeslot">8PM</div><div id="main9PM" class="timebox timeslot">9PM</div></div><div id="monday" class="weekday"> <div id="monTime" class="timebox th">Mon</div><div id="mon8AM" class="timebox"></div><div id="mon830AM" class="timebox halfhour"></div><div id="mon9AM" class="timebox"></div><div id="mon930AM" class="timebox halfhour"></div><div id="mon10AM" class="timebox"></div><div id="mon1030AM" class="timebox halfhour"></div><div id="mon11AM" class="timebox"></div><div id="mon130AM" class="timebox halfhour"></div><div id="mon12PM" class="timebox"></div><div id="mon1230PM" class="timebox halfhour"></div><div id="mon1PM" class="timebox"></div><div id="mon130PM" class="timebox halfhour"></div><div id="mon2PM" class="timebox"></div><div id="mon230PM" class="timebox halfhour"></div><div id="mon3PM" class="timebox"></div><div id="mon330PM" class="timebox halfhour"></div><div id="mon4PM" class="timebox"></div><div id="mon430PM" class="timebox halfhour"></div><div id="mon5PM" class="timebox"></div><div id="mon530PM" class="timebox halfhour"></div><div id="mon6PM" class="timebox"></div><div id="mon630PM" class="timebox halfhour"></div><div id="mon7PM" class="timebox"></div><div id="mon730PM" class="timebox halfhour"></div><div id="mon8PM" class="timebox"></div><div id="mon830PM" class="timebox halfhour"></div><div id="mon9PM" class="timebox"></div><div id="mon930PM" class="timebox halfhour"></div></div><div id="tuesday" class="weekday"> <div id="tuesTime" class="timebox th">Tues</div><div id="tues8AM" class="timebox"></div><div id="tues830AM" class="timebox halfhour"></div><div id="tues9AM" class="timebox"></div><div id="tues930AM" class="timebox halfhour"></div><div id="tues10AM" class="timebox"></div><div id="tues1030AM" class="timebox halfhour"></div><div id="tues11AM" class="timebox"></div><div id="tues130AM" class="timebox halfhour"></div><div id="tues12PM" class="timebox"></div><div id="tues1230PM" class="timebox halfhour"></div><div id="tues1PM" class="timebox"></div><div id="tues130PM" class="timebox halfhour"></div><div id="tues2PM" class="timebox"></div><div id="tues230PM" class="timebox halfhour"></div><div id="tues3PM" class="timebox"></div><div id="tues330PM" class="timebox halfhour"></div><div id="tues4PM" class="timebox"></div><div id="tues430PM" class="timebox halfhour"></div><div id="tues5PM" class="timebox"></div><div id="tues530PM" class="timebox halfhour"></div><div id="tues6PM" class="timebox"></div><div id="tues630PM" class="timebox halfhour"></div><div id="tues7PM" class="timebox"></div><div id="tues730PM" class="timebox halfhour"></div><div id="tues8PM" class="timebox"></div><div id="tues830PM" class="timebox halfhour"></div><div id="tues9PM" class="timebox"></div><div id="tues930PM" class="timebox halfhour"></div></div><div id="wednesday" class="weekday"> <div id="wedTime" class="timebox th">Wed</div><div id="wed8AM" class="timebox"></div><div id="wed830AM" class="timebox halfhour"></div><div id="wed9AM" class="timebox"></div><div id="wed930AM" class="timebox halfhour"></div><div id="wed10AM" class="timebox"></div><div id="wed1030AM" class="timebox halfhour"></div><div id="wed11AM" class="timebox"></div><div id="wed130AM" class="timebox halfhour"></div><div id="wed12PM" class="timebox"></div><div id="wed1230PM" class="timebox halfhour"></div><div id="wed1PM" class="timebox"></div><div id="wed130PM" class="timebox halfhour"></div><div id="wed2PM" class="timebox"></div><div id="wed230PM" class="timebox halfhour"></div><div id="wed3PM" class="timebox"></div><div id="wed330PM" class="timebox halfhour"></div><div id="wed4PM" class="timebox"></div><div id="wed430PM" class="timebox halfhour"></div><div id="wed5PM" class="timebox"></div><div id="wed530PM" class="timebox halfhour"></div><div id="wed6PM" class="timebox"></div><div id="wed630PM" class="timebox halfhour"></div><div id="wed7PM" class="timebox"></div><div id="wed730PM" class="timebox halfhour"></div><div id="wed8PM" class="timebox"></div><div id="wed830PM" class="timebox halfhour"></div><div id="wed9PM" class="timebox"></div><div id="wed930PM" class="timebox halfhour"></div></div><div id="thursday" class="weekday"> <div id="thursTime" class="timebox th">Thurs</div><div id="thurs8AM" class="timebox"></div><div id="thurs830AM" class="timebox halfhour"></div><div id="thurs9AM" class="timebox"></div><div id="thurs930AM" class="timebox halfhour"></div><div id="thurs10AM" class="timebox"></div><div id="thurs1030AM" class="timebox halfhour"></div><div id="thurs11AM" class="timebox"></div><div id="thurs130AM" class="timebox halfhour"></div><div id="thurs12PM" class="timebox"></div><div id="thurs1230PM" class="timebox halfhour"></div><div id="thurs1PM" class="timebox"></div><div id="thurs130PM" class="timebox halfhour"></div><div id="thurs2PM" class="timebox"></div><div id="thurs230PM" class="timebox halfhour"></div><div id="thurs3PM" class="timebox"></div><div id="thurs330PM" class="timebox halfhour"></div><div id="thurs4PM" class="timebox"></div><div id="thurs430PM" class="timebox halfhour"></div><div id="thurs5PM" class="timebox"></div><div id="thurs530PM" class="timebox halfhour"></div><div id="thurs6PM" class="timebox"></div><div id="thurs630PM" class="timebox halfhour"></div><div id="thurs7PM" class="timebox"></div><div id="thurs730PM" class="timebox halfhour"></div><div id="thurs8PM" class="timebox"></div><div id="thurs830PM" class="timebox halfhour"></div><div id="thurs9PM" class="timebox"></div><div id="thurs930PM" class="timebox halfhour"></div></div><div id="friday" class="weekday"> <div id="friTime" class="timebox th">Fri</div><div id="fri8AM" class="timebox"></div><div id="fri830AM" class="timebox halfhour"></div><div id="fri9AM" class="timebox"></div><div id="fri930AM" class="timebox halfhour"></div><div id="fri10AM" class="timebox"></div><div id="fri1030AM" class="timebox halfhour"></div><div id="fri11AM" class="timebox"></div><div id="fri130AM" class="timebox halfhour"></div><div id="fri12PM" class="timebox"></div><div id="fri1230PM" class="timebox halfhour"></div><div id="fri1PM" class="timebox"></div><div id="fri130PM" class="timebox halfhour"></div><div id="fri2PM" class="timebox"></div><div id="fri230PM" class="timebox halfhour"></div><div id="fri3PM" class="timebox"></div><div id="fri330PM" class="timebox halfhour"></div><div id="fri4PM" class="timebox"></div><div id="fri430PM" class="timebox halfhour"></div><div id="fri5PM" class="timebox"></div><div id="fri530PM" class="timebox halfhour"></div><div id="fri6PM" class="timebox"></div><div id="fri630PM" class="timebox halfhour"></div><div id="fri7PM" class="timebox"></div><div id="fri730PM" class="timebox halfhour"></div><div id="fri8PM" class="timebox"></div><div id="fri830PM" class="timebox halfhour"></div><div id="fri9PM" class="timebox"></div><div id="fri930PM" class="timebox halfhour"></div></div></div><div id="sharing" class="tab"> <p>This is where sharing will be</p></div><div id="CRNs" class="tab"> <p>This is where CRN clipboard will be</p></div></div></div></div>';
