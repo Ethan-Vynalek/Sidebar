@@ -22,7 +22,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.banner.bucknell.edu/BANPRD/*"],
-      "css": ["style.css"],
+      "css": ["style.css", "sidebar/stylesheet.css"],
       "js": ["jquery.min.js", "sidebar.js"]
     }
   ]
