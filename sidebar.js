@@ -43,7 +43,6 @@ $(".atcbutton").click(function(){
 	classObj.prm = tds[8].textContent;
 	classObj.CCC = tds[9].textContent;
 	console.log(classObj);
-    console.log(sizeof(classObj));
 });
 
 // Minified sidebar
