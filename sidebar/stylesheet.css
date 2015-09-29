@@ -56,6 +56,13 @@
     background: white;
 }
 
+.ports {
+    width:100%;
+    display:block;
+    //border-left: 2px;
+    background: white;
+}
+
 .extra {
     width: auto;
     float: left;
@@ -70,5 +77,3 @@
     font-family: "Avenir W01", sans-serif;
     box-shadow: none !important;
 }
-
-
