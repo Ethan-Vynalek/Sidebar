@@ -126,8 +126,6 @@ var parseTime = function(timeStrings) {
 			ampm = times.split("-")[1].slice(-2).toUpperCase();
             
             var td = timeDifference(startHour, startMinute, endHour, endMinute);
-            console.log("td", td);
-            console.log(startHour, startMinute, ":", endHour, endMinute);
             
             while(td != 0) {
                 console.log(td);
