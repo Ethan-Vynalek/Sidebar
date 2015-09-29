@@ -5,7 +5,7 @@ $(document).ready(function(){
     ////////////////////////
     // INSERTING ELEMENTS //
     ////////////////////////
-   
+
     // Highlight Hovered TRs
     $("#coursetable tbody tr td:first-child").each(function(index) {
         if(typeof $(this).attr("colspan") === "undefined") {
@@ -43,16 +43,25 @@ $(document).ready(function(){
 
     var obj = {};
     var storage = chrome.storage.sync;
-    
+
     // Add existing courses to the calendar
     storage.get(function(result){
         var courses = result;
+        var i;
         for(i in courses) {
             var course = courses[i];
-            console.log(Number(course));
+            if(isNaN(Number(course))) {
+                var courseTime = course.time.substring(1, course.time.length - 1).split("|");
+                var divs = parseTime(courseTime);
+                var div;
+                for(div in divs) {
+                    var id = divs[div];
+                    $(id).css("background-color","orange");
+               }
+            }
         }
     });
-    
+
 
 
 
@@ -78,7 +87,7 @@ $(document).ready(function(){
         printStorage();
     });
 
-    // Calculates the difference between two time strings assuming they are in 
+    // Calculates the difference between two time strings assuming they are in
     // intervals of 30 and that both times are in the same day
     var timeDifference = function(sh, sm, eh, em) {
         var startHour = Number(sh);
@@ -88,22 +97,22 @@ $(document).ready(function(){
         startHour = (startHour > endHour) ? 12 - startHour : startHour;
         var difference;
 
-        if(startHour === endHour && startMinute === endMinute) return 0
-        else if(startHour === endHour && startMinute !== endMinute) return 0.5
+        if(startHour === endHour && startMinute === endMinute) return 0;
+        else if(startHour === endHour && startMinute !== endMinute) return 0.5;
         else {
             difference = endHour - startHour;
             if(startMinute === endMinute) return difference;
             else if(startMinute > endMinute) return difference - 0.5;
             else return difference + 0.5;
         }
-    }
+    };
 
     // Adds one hour to a string number
     var addOneHour = function(h) {
         var hour = Number(h);
         hour = (hour === 12) ? 1 : hour + 1;
         return hour.toString();
-    }
+    };
 
     // Parses an array of time strings and returns an array of strings corresponding to the
     // ids of the div elements for that time string.
@@ -152,7 +161,7 @@ $(document).ready(function(){
 
                 var td = timeDifference(startHour, startMinute, endHour, endMinute);
 
-                while(td != 0) {
+                while(td !== 0) {
                     if(startHour === endHour && startMinute === endMinute) break;
                     divs.push(prefix + startHour + startMinute + ampm);
 
@@ -211,4 +220,3 @@ $(document).ready(function(){
     });
     // *** END CHROME SYNC STORAGE ***
 });
-
