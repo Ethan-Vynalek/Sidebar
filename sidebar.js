@@ -54,16 +54,43 @@ $("#print").click(function(){
 	printStorage();
 });
 
+// Calculates the difference between two time strings assuming they are in 
+// intervals of 30 and that both times are in the same day
+var timeDifference = function(sh, sm, eh, em) {
+    var startHour = Number(sh);
+    var startMinute = Number(sm);
+    var endHour = Number(eh);
+    var endMinute = Number(em);
+    startHour = (startHour > endHour) ? 12 - startHour : startHour;
+    var difference;
+    
+    if(startHour === endHour && startMinute === endMinute) return 0
+    else if(startHour === endHour && startMinute !== endMinute) return 0.5
+    else {
+        difference = endHour - startHour;
+        if(startMinute === endMinute) return difference;
+        else if(startMinute > endMinute) return difference - 0.5;
+        else return difference + 0.5;
+    }
+}
+
+var addOneHour = function(h) {
+    var hour = Number(h);
+    hour = (hour === 12) ? 1 : hour + 1;
+    return hour.toString();
+}
+
 // Parses an array of time strings and returns an array of strings corresponding to the
 // ids of the div elements for that time string.
 // Accepts an array of time strings in the form: ["TR 9:30-10:52am", "T 11:00-11:52am"]
 var parseTime = function(timeStrings) {
-	var i, divs;
+	var i;
+    var divs = [];
 	for (i in timeStrings) {
 		var timeString = timeStrings[i].split(" ");
 		var days = timeString[0];
 		var times = timeString[1];
-		var char, prefix, start, end, ampm;
+		var char, prefix, startHour, startMinute, endHour, endMinute, ampm;
 		for (char in days){
 			var day = days[char];
 			switch (day) {
@@ -83,14 +110,45 @@ var parseTime = function(timeStrings) {
 					prefix = "#fri";
 					break;
 			}
-			start = times.split("-")[0];
-			end = times.split("-")[1].substring(0, times.split("-")[1].length - 2);
-			ampm = times.split("-")[1].slice(-2);
-			prefix += start.split(":")[0];
-			console.log(prefix);
+			var start = times.split("-")[0];
+            startHour = start.split(":")[0];
+            startMinute = (start.split(":")[1] === "30") ? "30" : "";
+			var end = times.split("-")[1].substring(0, times.split("-")[1].length - 2);
+            endHour = end.split(":")[0];
+            var eM = end.split(":")[1];
+            if(eM === "52") {
+                endMinute = "";
+                endHour = (endHour === "12") ? "1" : (Number(endHour) + 1).toString();
+            }
+            else {
+                endMinute = "30";
+            }
+			ampm = times.split("-")[1].slice(-2).toUpperCase();
+            
+            var td = timeDifference(startHour, startMinute, endHour, endMinute);
+            console.log("td", td);
+            console.log(startHour, startMinute, ":", endHour, endMinute);
+            
+            while(td != 0) {
+                console.log(td);
+                if(startHour === endHour && startMinute === endMinute) break;
+                divs.push(prefix + startHour + startMinute + ampm);
+                
+                if(startMinute === "30") {
+                    startMinute = "";
+                    startHour = addOneHour(startHour);
+                }
+                else {
+                    startMinute = "30";
+                }
+                
+                td = timeDifference(startHour, startMinute, endHour, endMinute);
+            }
+            
 		}
 
 	}
+    return divs;
 };
 
 // Clicking on "Add to Calendar" will create a course object of the current
@@ -121,7 +179,13 @@ $(".atcbutton").click(function(){
 
 	// Adding the class to the calendar
 	var times = classObj.time.substring(1, classObj.time.length - 1).split("|");
-	parseTime(times);
+	var divs = parseTime(times);
+    
+    var div;
+    for(div in divs) {
+        var id = divs[div];
+        $(id).css("background-color","orange");
+   }
 });
 
 // *** END CHROME SYNC STORAGE ***
