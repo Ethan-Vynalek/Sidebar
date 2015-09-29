@@ -45,31 +45,34 @@ $(document).ready(function(){
     var storage = chrome.storage.sync;
 
     // Add existing courses to the calendar
-    storage.get(function(result){
-        var courses = result;
-        var i;
-        for(i in courses) {
-            var course = courses[i];
-            if(isNaN(Number(course))) {
-                var courseTime = course.time.substring(1, course.time.length - 1).split("|");
-                var divs = parseTime(courseTime);
-                var div;
-                for(div in divs) {
-                    var id = divs[div];
-                    $(id).css("background-color","orange");
-               }
+    var updateCalendar = function() {
+        $(".timebox").css("background-color","white");
+        storage.get(function(result){
+            var courses = result;
+            var i;
+            for(i in courses) {
+                var course = courses[i];
+                if(isNaN(Number(course))) {
+                    var courseTime = course.time.substring(1, course.time.length - 1).split("|");
+                    var divs = parseTime(courseTime);
+                    var div;
+                    for(div in divs) {
+                        var id = divs[div];
+                        $(id).css("background-color","orange");
+                   }
+                }
             }
-        }
-    });
+        });
+    };
 
-
-
+    updateCalendar();
 
     // Clears the sync storage
     var clearStorage = function() {
         storage.clear();
         obj = {'classesStored': 0};
         storage.set(obj);
+        updateCalendar();
     };
 
     // Prints the sync storage object
@@ -204,19 +207,9 @@ $(document).ready(function(){
             classesStored++;
             obj.classesStored = classesStored;
             storage.set(obj, function() {
-                printStorage();
+                updateCalendar();
             });
         });
-
-        // Adding the class to the calendar
-        var times = classObj.time.substring(1, classObj.time.length - 1).split("|");
-        var divs = parseTime(times);
-
-        var div;
-        for(div in divs) {
-            var id = divs[div];
-            $(id).css("background-color","orange");
-       }
     });
     // *** END CHROME SYNC STORAGE ***
 });
