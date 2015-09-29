@@ -1,7 +1,11 @@
 $(document).ready(function(){
 
-    console.log("Start of Extension"); // for debugging purposes
+    console.log("Document Ready"); // for debugging purposes
 
+    ////////////////////////
+    // INSERTING ELEMENTS //
+    ////////////////////////
+   
     // Highlight Hovered TRs
     $("#coursetable tbody tr td:first-child").each(function(index) {
         if(typeof $(this).attr("colspan") === "undefined") {
@@ -37,9 +41,20 @@ $(document).ready(function(){
     $("body").wrapInner("<div class='original'></div>");
     $(".original").after(sidebarHTML);
 
-    // *** START CHROME SYNC STORAGE ***
     var obj = {};
     var storage = chrome.storage.sync;
+    
+    // Add existing courses to the calendar
+    storage.get(function(result){
+        var courses = result;
+        for(i in courses) {
+            var course = courses[i];
+            console.log(Number(course));
+        }
+    });
+    
+
+
 
     // Clears the sync storage
     var clearStorage = function() {
