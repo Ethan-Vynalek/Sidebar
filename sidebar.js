@@ -58,7 +58,7 @@ $(document).ready(function(){
                     var div;
                     for(div in divs) {
                         var id = divs[div];
-                        $(id).css("background-color","orange");
+                        $(id).css("background-color","#EA760A");
                    }
                 }
             }
