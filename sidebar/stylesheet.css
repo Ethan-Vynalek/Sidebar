@@ -56,7 +56,41 @@
     background: white;
 }
 
+.ports {
+    width:100%;
+    display:block;
+    //border-left: 2px;
+    background: white;
+}
+
 .extra {
     width: auto;
     float: left;
 }
+
+#export-button {
+    padding:9px 15px;
+    display:block;
+    border-radius:3px 3px 3px 0px;
+    background:#D5DDE7;
+    font-size:16px;
+    font-weight:600;
+    color:#5282AA;
+    transition:all linear 0.15s;
+    font-family: "Avenir W01", sans-serif;
+    text-decoration: none;
+}
+
+#import-button {
+    padding:9px 15px;
+    display:block;
+    border-radius:3px 3px 3px 0px;
+    background:#D5DDE7;
+    font-size:16px;
+    font-weight:600;
+    color:#5282AA;
+    transition:all linear 0.15s;
+    font-family: "Avenir W01", sans-serif;
+    text-decoration: none;
+}
+
