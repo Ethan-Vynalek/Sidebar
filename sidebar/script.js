@@ -1,15 +1,16 @@
-jQuery(document).ready(function() {
+$(document).ready(function() {
 
-    jQuery('.tabs .tab-links a').on( 'click', function(e) {
-        var currentAttrValue = jQuery(this).attr('href');
+	$("#sidebar").accordion();
+	//jQuery('.tabs .tab-links a').on( 'click', function(e) {
+        //var currentAttrValue = jQuery(this).attr('href');
 
         // Show/Hide tabs
-        jQuery( '.tabs ' + currentAttrValue).fadeIn(400).siblings().hide();
+        //jQuery( '.tabs ' + currentAttrValue).fadeIn(400).siblings().hide();
 
         // Change/remove current tab to active
-        jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+        //jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
 
-        e.preventDefault();
-    });
+        //e.preventDefault();
+	//});
 
 });
