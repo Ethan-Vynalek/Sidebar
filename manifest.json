@@ -27,7 +27,7 @@
         {
             "matches": ["https://www.banner.bucknell.edu/BANPRD/*SchedDisplay"],
             "css": ["style.css", "sidebar/stylesheet.css"],
-            "js": ["jquery.min.js", "sidebar.js", "jquery-ui.min.js"]
+            "js": ["jquery/jquery.min.js", "sidebar.js", "jquery/jquery-ui.min.js"]
         }
     ]
 }
