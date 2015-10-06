@@ -5,7 +5,7 @@ console.log(exClasses)
  */
 
 var CRNSearch = function(searchTerm, classes) {
-    var returnObject = [];
+    var returnObject = {};
     for ( var i = 0; i < Object.keys(classes).length; i++ ) {
         if (classes[i].CRN == searchTerm) {
             returnObject[Object.keys(returnObject).length] = classes[i];
@@ -17,7 +17,7 @@ var CRNSearch = function(searchTerm, classes) {
 }
 
 var CCCSearch = function(searchTerm, classes) {
-    var returnObject = [];
+    var returnObject = {};
     for ( var i = 0; i < Object.keys(classes).length; i++ ) {
         if (classes[i].CCC == searchTerm) {
             returnObject[Object.keys(returnObject).length] = classes[i];
@@ -26,8 +26,93 @@ var CCCSearch = function(searchTerm, classes) {
     return returnObject;
 }
 
+//http://stackoverflow.com/questions/141348/what-is-the-best-way-to-parse-a-time-into-a-date-object-from-user-input-in-javas
+var parseTime = function (timeString) {    
+    if (timeString == '') return null;
+
+    var time = timeString.match(/(\d+)(:(\d\d))?\s*(p?)/i); 
+    if (time == null) return null;
+
+    var hours = parseInt(time[1],10);    
+    if (hours == 12 && !time[4]) {
+          hours = 0;
+    }
+    else {
+        hours += (hours < 12 && time[4])? 12 : 0;
+    }   
+    var d = new Date();  
+    
+    d.setHours(hours);
+    d.setMinutes(parseInt(time[3],10) || 0);
+    d.setSeconds(0, 0);  
+    return d;
+}
+
+
+//serach term is an array containing 2 values, first a truth value of if its classes after a time (true)
+//or classes before a time (false), and then a time in military hours.
+var timeSearch = function(searchTerm, classes) {
+    var returnObject = {};
+    var falseObject = {};
+    var timeStart;
+    var timeEnd;
+    var barSpots;
+    var dashSpots;
+    var timeString
+    for ( var i = 0; i < Object.keys(classes).length; i++ ) {
+        
+        
+        barSpots = [];
+        dashSpots = [];
+        
+        for (var j = 0; j < classes[i].time.length; j++) {
+            if (classes[i].time.charAt(j) == "|") {
+                barSpots.push(j);
+            } else if (classes[i].time.charAt(j) == "-") {
+                dashSpots.push(j);
+            }
+        }
+        //really annoying string parsing
+        timeString = classes[i].time;
+        for (var q = 0; q < barSpots.length - 1; q++) {
+            //given something like this: |MWF 2:00-2:52pm|R 7:00-7:52pm|, this next line will give
+            //parseTime the string: MWF 2:00pm on the first pass through, and U 7:00pm on the second pass through
+            timeStart = parseTime(timeString.substring(barSpots[q],dashSpots[q]).concat(timeString.substring(barSpots[q+1]-2,barSpots[q+1])));
+
+            //given something like this: |MWF 2:00-2:52pm|R 7:00-7:52pm|, this next line will give
+            //parseTime the string 2:52pm on the first pass through, and 7:52pm on the second pass through
+            timeEnd = parseTime(timeString.substring(dashSpots[q], barSpots[q + 1]));
+            
+            //catches cases that think 11-12pm is 11pm to 12 pm
+            if (timeEnd.getHours() < timeStart.getHours()) {
+                timeStart.setHours(timeStart.getHours() - 12);
+            }
+            
+            //if after the search time is desired
+            if (searchTerm[0]) {
+                
+                //if the start time is before the desired time, put in false class list
+                if (timeStart.getHours() < searchTerm[1] ) {
+                    falseObject[Object.keys(falseObject).length] = classes[i];
+                    break;
+                }
+            //if before the search time is desired
+            } else {
+                
+                //if the start time is after the desired time, put in false class list
+                if (timeEnd.getHours() > searchTerm[1] ) {
+                    falseObject[Object.keys(falseObject).length] = classes[i];   
+                    break;
+                }
+            }
+        }
+    }
+    returnObject = notSearch(falseObject,classes);
+    return returnObject;
+}
+
 var courseSearch = function(department, course_number, classes) {
-    var returnObject = [];
+    var returnObject = {};
     for ( var i = 0; i < Object.keys(classes).length; i++ ) {
         if (classes[i].course.indexOf(department + " " + course_number.toString()) != -1) {
             returnObject[Object.keys(returnObject).length] = classes[i];
@@ -37,7 +122,7 @@ var courseSearch = function(department, course_number, classes) {
 }
 
 var departmentSearch = function(department, classes) {
-    var returnObject = [];
+    var returnObject = {};
     for ( var i = 0; i < Object.keys(classes).length; i++ ) {
         if (classes[i].course.indexOf(department) != -1) {
             returnObject[Object.keys(returnObject).length] = classes[i];
@@ -47,7 +132,7 @@ var departmentSearch = function(department, classes) {
 }
 
 var titleSearch = function(searchTerm, classes) {
-    var returnObject = [];
+    var returnObject = {};
     for ( var i = 0; i < Object.keys(classes).length; i++ ) {
         if (classes[i].title.toUpperCase() == searchTerm.toUpperCase()) {
             returnObject[Object.keys(returnObject).length] = classes[i];
@@ -60,7 +145,7 @@ var titleSearch = function(searchTerm, classes) {
 
 var andSearch = function(object1, object2) {  
     
-    var returnObject = [];
+    var returnObject = {};
 
     for ( var i = 0; i < Object.keys(object1).length; i++ ) {
         for ( var q = 0; q < Object.keys(object2).length; q++ ) {
@@ -96,7 +181,7 @@ var orSearch = function(object1, object2) {
 
 var notSearch = function(object1, masterObject) {  
     var isIn;
-    var object2 = [];
+    var object2 = {};
     for ( var i = 0; i < Object.keys(masterObject).length; i++ ) {
         isIn = true;
         
@@ -127,9 +212,6 @@ console.log(courseSearch("ACFM", "220", exClasses));
 console.log("DepartmentSearch");
 console.log(departmentSearch("CSCI", exClasses));
 
-console.log("CCCSearch");
-console.log(CCCSearch("SLSC", exClasses));
-
 console.log("titleSearch");
 console.log(titleSearch("Business Law I", exClasses));
 
@@ -141,3 +223,7 @@ console.log(orSearch(CCCSearch("SLSC", exClasses),CRNSearch(17153, exClasses)))
 
 console.log("notSearch");
 console.log(notSearch(CCCSearch("SLSC", exClasses), exClasses))
+
+console.log("timeSearch");
+
+console.log(timeSearch([false ,12], exClasses));
