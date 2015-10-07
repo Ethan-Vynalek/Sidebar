@@ -43,11 +43,11 @@ $(document).ready(function(){
 
     document.getElementById('export-button').onclick = function() {
         window.confirm("You are exporting");
-    }
+    };
 
       document.getElementById('import-button').onclick = function() {
         window.confirm("You are importing");
-    }
+    };
 
     var obj = {};
     var storage = chrome.storage.sync;
