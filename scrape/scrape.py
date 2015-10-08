@@ -18,4 +18,8 @@ response = br.response()
 url = response.read()
 
 soup = BeautifulSoup(url, 'lxml')
-print soup.find(id="coursetable")
+trs = soup.findAll("tr", align="left")
+for tr in trs:
+    tds= tr.findChildren("td")
+    if (tds[0].get_text().isdigit()):
+        print tds[0].get_text()
