@@ -70,11 +70,12 @@ $(document).ready(function(){
                    }
                 }
             }
+            updateCRN();    //want to update CRN every time a course is added
         });
     };
 
     updateCalendar();
-    
+
      // Add existing courses to the calendar
     var updateCRN = function() {
         $(".CRNlist").css("content","");
@@ -84,16 +85,15 @@ $(document).ready(function(){
             for(i in courses) {
                 var course = courses[i];
                 if(isNaN(Number(course))) {
-                    var courseCRN = course.CRN;                   
-                    $("CRN").css("content",courseCRN); 
-                    document.getElementById("CRNs").innerHTML += courseCRN;
+                    var courseCRN = course.CRN;
+                    $("CRN").css("content",courseCRN);
+                    document.getElementById("CRNs").innerHTML = courseCRN;
                 }
             }
         });
     };
-    
-    updateCRN();
-    
+
+
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -108,7 +108,6 @@ $(document).ready(function(){
         obj = {'classesStored': 0};
         storage.set(obj);
         updateCalendar();
-        updateCRN();
     };
 
     // Prints the sync storage object
@@ -155,7 +154,7 @@ $(document).ready(function(){
 
     // Parses an array of time strings and returns an array of strings corresponding to the
     // ids of the div elements for that time string.
-    // Accepts an array of time strings in the form: ["TR 9:30-10:52am", "T 11:00-11:52am"]
+    // Accepts an "New text!"array of time strings in the form: ["TR 9:30-10:52am", "T 11:00-11:52am"]
     var parseTime = function(timeStrings) {
         var i;
         var divs = [];
@@ -244,7 +243,6 @@ $(document).ready(function(){
             obj.classesStored = classesStored;
             storage.set(obj, function() {
                 updateCalendar();
-                updateCRN();
             });
         });
     });
