@@ -232,9 +232,10 @@ $(document).ready(function(){
         classObj.room = tds[4].textContent.replace(/\n/g, "|");
         classObj.instructor = tds[5].textContent.replace(/\n/g, "");
         classObj.seatsAvail = tds[6].textContent.trim();
-        classObj.seatsRes = tds[7].textContent.trim();
-        classObj.prm = tds[8].textContent.trim();
-        classObj.CCC = tds[9].textContent.trim();
+        classObj.waitList = tds[7].textContent.trim();
+        classObj.seatsRes = tds[8].textContent.trim();
+        classObj.prm = tds[9].textContent.trim();
+        classObj.CCC = tds[10].textContent.trim();
 
         storage.get(function(result){
             var classesStored = result.classesStored;
