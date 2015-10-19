@@ -3,6 +3,9 @@ import json
 from lxml import html
 from bs4 import BeautifulSoup
 
+# command to run script every 5 minutes
+# while sleep 300; python script.py; done
+
 URL = "https://www.banner.bucknell.edu/BANPRD/hwzkschd.P_Bucknell_SchedbyDept"
 CRN = 0
 COURSE = 1
@@ -15,7 +18,6 @@ WAIT = 7
 RES = 8
 PRM = 9
 CCC = 10
-
 
 br = mechanize.Browser()
 br.set_handle_robots(False)
