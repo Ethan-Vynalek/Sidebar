@@ -32,9 +32,6 @@ courseSyms = ["ACFM", "ANBE", "ANTH", "ARBC", "ARTH", "ARST", "ASTR", "BIOL",
            "OCST", "PHIL", "PHYS", "POLS", "PSYC", "RELI", "RESC", "RUSS",
            "SIGN", "SOCI", "SPAN", "THEA", "UNIV", "WMST"]
 
-# dumps = json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}])
-# print dumps
-
 index = 0
 courses = {}
 
