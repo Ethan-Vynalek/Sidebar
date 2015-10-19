@@ -1,6 +1,7 @@
 import mechanize
-from bs4 import BeautifulSoup
+import json
 from lxml import html
+from bs4 import BeautifulSoup
 
 URL = "https://www.banner.bucknell.edu/BANPRD/hwzkschd.P_Bucknell_SchedbyDept"
 CRN = 0
@@ -21,7 +22,7 @@ br.set_handle_robots(False)
 url = br.open(URL)
 
 # 70 departments... uh oh
-courses = ["ACFM", "ANBE", "ANTH", "ARBC", "ARTH", "ARST", "ASTR", "BIOL",
+courseSyms = ["ACFM", "ANBE", "ANTH", "ARBC", "ARTH", "ARST", "ASTR", "BIOL",
            "BMEG", "OFFL", "OFFD", "OFFF", "OFFAT", "OFFDC", "CHEG", "CHEM",
            "CHIN", "CEEG", "CLAS", "CSCI", "DANC", "EAST", "ECON", "EDUC",
            "ECEG", "ENGR", "ENGL", "ENST", "FLMS", "FOUN", "FREN", "GEOG",
@@ -31,7 +32,13 @@ courses = ["ACFM", "ANBE", "ANTH", "ARBC", "ARTH", "ARST", "ASTR", "BIOL",
            "OCST", "PHIL", "PHYS", "POLS", "PSYC", "RELI", "RESC", "RUSS",
            "SIGN", "SOCI", "SPAN", "THEA", "UNIV", "WMST"]
 
-for course in courses:
+# dumps = json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}])
+# print dumps
+
+index = 0
+courses = {}
+
+for course in courseSyms:
     br.select_form("valform")
     control = br.form.find_control("param1")
     control.value = [course]
@@ -41,22 +48,27 @@ for course in courses:
     response = br.response()
     url = response.read()
 
+
     soup = BeautifulSoup(url, 'lxml')
     trs = soup.findAll("tr", align="left")
     for tr in trs:
         tds= tr.findChildren("td")
-        line = ""
         if (tds[0].get_text().isdigit()):
-            line +=  tds[CRN].get_text().strip()
-            line += " [] " + tds[COURSE].get_text().strip()
-            line += " [] " + tds[TITLE].get_text().strip()
-            line += " [] " + tds[TIME].get_text().replace('\n', '|')
-            line += " [] " + tds[ROOM].get_text().replace('\n', '|')
-            line += " [] " + tds[INSTR].get_text().replace('\n', '')
-            line += " [] " + tds[SEATS].get_text().strip()
-            line += " [] " + tds[RES].get_text().strip()
-            line += " [] " + tds[PRM].get_text().strip()
-            line += " [] " + tds[CCC].get_text().strip()
-            print line
+            courses[index] = {}
+            courses[index]["CRN"] = tds[CRN].get_text().strip()
+            courses[index]["course"] = tds[COURSE].get_text().strip()
+            courses[index]["title"] = tds[TITLE].get_text().strip()
+            courses[index]["time"] = tds[TIME].get_text().replace('\n', '|')
+            courses[index]["room"] = tds[ROOM].get_text().replace('\n', '|')
+            courses[index]["instructor"] = tds[INSTR].get_text().replace('\n', '')
+            courses[index]["seatsAvail"] = tds[SEATS].get_text().strip()
+            courses[index]["seatsRes"] = tds[RES].get_text().strip()
+            courses[index]["prm"] = tds[PRM].get_text().strip()
+            courses[index]["CCC"] = tds[CCC].get_text().strip()
+            index = index + 1
 
     br.back()
+
+
+dumps = json.dumps(courses, sort_keys=True, indent=4, separators=(',', ': '))
+print dumps
