@@ -52,7 +52,31 @@ $(document).ready(function(){
     var obj = {};
     var storage = chrome.storage.sync;
 
-     // Add existing courses to the calendar
+    // Updates the button values ("Add to Calendar" or "Remove")
+    var updateBtnVals = function() {
+        storage.get(function(result){
+            var courses = result;
+            var crns = [];
+            var i;
+            for(i in courses) {
+               crns.push(courses[i].CRN)
+            }
+            $("tr[align='left']").each(function() {
+                var td = $(this)
+                var crn = $(this).children()[0].textContent;
+                if(crns.indexOf(crn) >= 0) {
+                    td.children(".atcbutton").val("Remove");
+                    td.children(".atcbutton").addClass("rmbutton");
+                }
+                else {
+                    td.children(".atcbutton").removeClass("rmbutton");
+                    td.children(".atcbutton").val("Add to Calendar");
+                }
+            });
+        });        
+    }
+
+    // Add existing courses to the calendar
     var updateCalendar = function() {
         $(".timebox").css("background-color","white");
         storage.get(function(result){
@@ -75,6 +99,7 @@ $(document).ready(function(){
                 }
             }
             updateCRN();    //want to update CRN every time a course is added
+            updateBtnVals();
         });
     };
     
@@ -97,7 +122,7 @@ $(document).ready(function(){
             } 
         });
     };
-
+    
 
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
@@ -251,6 +276,6 @@ $(document).ready(function(){
                 updateCalendar();
             });
         });
-    });
+   });
     // *** END CHROME SYNC STORAGE ***
 });
