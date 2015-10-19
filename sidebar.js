@@ -52,44 +52,49 @@ $(document).ready(function(){
     var obj = {};
     var storage = chrome.storage.sync;
 
-    // Add existing courses to the calendar
+     // Add existing courses to the calendar
     var updateCalendar = function() {
         $(".timebox").css("background-color","white");
         storage.get(function(result){
+            var colors = ["#EA760A", "#FECA3D", "#9F1926", "#561857", "#0090B8", "#005E2C", "#CDD57B", "#A08326"];
             var courses = result;
             var i;
-            for(i in courses) {
+            var colorIndex = 0;
+            for(i in courses) {               
                 var course = courses[i];
                 if(isNaN(Number(course))) {
+                    var courseColor = colors[colorIndex%8];
+                    colorIndex += 1;
                     var courseTime = course.time.substring(1, course.time.length - 1).split("|");
                     var divs = parseTime(courseTime);
-                    var div;
+                    var div;                   
                     for(div in divs) {
-                        var id = divs[div];
-                        $(id).css("background-color","#EA760A");
+                        var id = divs[div];                       
+                        $(id).css("background-color", courseColor);                       
                    }
                 }
             }
             updateCRN();    //want to update CRN every time a course is added
         });
     };
-
+    
     updateCalendar();
 
      // Add existing courses to the calendar
     var updateCRN = function() {
-        $(".CRNlist").css("content","");
+        document.getElementById("CRNs").innerHTML = "";
         storage.get(function(result){
             var courses = result;
             var i;
             for(i in courses) {
+                var courseCRN = "";
                 var course = courses[i];
                 if(isNaN(Number(course))) {
-                    var courseCRN = course.CRN;
+                    courseCRN = course.CRN + "<br>";
                     $("CRN").css("content",courseCRN);
-                    document.getElementById("CRNs").innerHTML = courseCRN;
+                    document.getElementById("CRNs").innerHTML += courseCRN;
                 }
-            }
+            } 
         });
     };
 
