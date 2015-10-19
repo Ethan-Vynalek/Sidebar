@@ -2,10 +2,6 @@ $(document).ready(function(){
 
     console.log("Document Ready"); // for debugging purposes
 
-    ////////////////////////
-    // INSERTING ELEMENTS //
-    ////////////////////////
-
     // Highlight Hovered TRs
     $("#coursetable tbody tr td:first-child").each(function(index) {
         if(typeof $(this).attr("colspan") === "undefined") {
@@ -250,6 +246,7 @@ $(document).ready(function(){
 
     // Clicking on "Add to Calendar" will create a course object of the current
     // class and then add that object to chrome's sync storage.
+    // Clicking on "Remove" will remove that course object from the storage.
     $(".atcbutton").click(function(){
         if($(this).val() === "Add to Calendar") {
             var tds = $(this).parent("tr").children();
@@ -293,5 +290,4 @@ $(document).ready(function(){
             })
         }
    });
-    // *** END CHROME SYNC STORAGE ***
 });
