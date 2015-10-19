@@ -66,10 +66,8 @@ $(document).ready(function(){
                 var crn = $(this).children()[0].textContent;
                 if(crns.indexOf(crn) >= 0) {
                     td.children(".atcbutton").val("Remove");
-                    td.children(".atcbutton").addClass("rmbutton");
                 }
                 else {
-                    td.children(".atcbutton").removeClass("rmbutton");
                     td.children(".atcbutton").val("Add to Calendar");
                 }
             });
@@ -253,29 +251,47 @@ $(document).ready(function(){
     // Clicking on "Add to Calendar" will create a course object of the current
     // class and then add that object to chrome's sync storage.
     $(".atcbutton").click(function(){
-        var tds = $(this).parent("tr").children();
-        var classObj = {};
-        classObj.CRN = tds[0].textContent.trim();
-        classObj.course = tds[1].textContent.trim();
-        classObj.title = tds[2].textContent.trim();
-        classObj.time = tds[3].textContent.replace(/\n/g, "|");
-        classObj.room = tds[4].textContent.replace(/\n/g, "|");
-        classObj.instructor = tds[5].textContent.replace(/\n/g, "");
-        classObj.seatsAvail = tds[6].textContent.trim();
-        classObj.waitList = tds[7].textContent.trim();
-        classObj.seatsRes = tds[8].textContent.trim();
-        classObj.prm = tds[9].textContent.trim();
-        classObj.CCC = tds[10].textContent.trim();
+        if($(this).val() === "Add to Calendar") {
+            var tds = $(this).parent("tr").children();
+            var classObj = {};
+            classObj.CRN = tds[0].textContent.trim();
+            classObj.course = tds[1].textContent.trim();
+            classObj.title = tds[2].textContent.trim();
+            classObj.time = tds[3].textContent.replace(/\n/g, "|");
+            classObj.room = tds[4].textContent.replace(/\n/g, "|");
+            classObj.instructor = tds[5].textContent.replace(/\n/g, "");
+            classObj.seatsAvail = tds[6].textContent.trim();
+            classObj.waitList = tds[7].textContent.trim();
+            classObj.seatsRes = tds[8].textContent.trim();
+            classObj.prm = tds[9].textContent.trim();
+            classObj.CCC = tds[10].textContent.trim();
 
-        storage.get(function(result){
-            var classesStored = result.classesStored;
-            obj[classesStored] = classObj;
-            classesStored++;
-            obj.classesStored = classesStored;
-            storage.set(obj, function() {
-                updateCalendar();
+            storage.get(function(result){
+                var classesStored = result.classesStored;
+                obj[classesStored] = classObj;
+                classesStored++;
+                obj.classesStored = classesStored;
+                storage.set(obj, function() {
+                    updateCalendar();
+                });
             });
-        });
+        }
+        else if($(this).val() === "Remove") {
+            var crn = $(this).parent("tr").children()[0].textContent;
+
+            storage.get(function(result){
+                classesStored = result.classesStored
+                for(i = 0; i < classesStored; i++) {
+                    if(crn == result[i].CRN) {
+                        storage.remove(String(i));
+                        storage.set({classesStored: classesStored - 1}, function() {
+                            updateCalendar();
+                        });
+                        break;
+                    }
+                }
+            })
+        }
    });
     // *** END CHROME SYNC STORAGE ***
 });
