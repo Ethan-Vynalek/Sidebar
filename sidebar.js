@@ -251,10 +251,11 @@ $(document).ready(function(){
                 // use this timeDifference value to figure out the middle
                 // to put the course name
                 var td = timeDifference(startHour, startMinute, endHour, endMinute);
-                var mid = td;
+                var mid = Math.floor(td);
 
                 while(td !== 0) {
                     if(startHour === endHour && startMinute === endMinute) break;
+                    console.log(mid + 1);
                     if(td*2 === mid + 1) {
                         divs.push("text");
                     }
@@ -309,6 +310,7 @@ $(document).ready(function(){
                 for(i = 0; i < classesStored; i++) {
                     if(crn == result[i].CRN) {
                         storage.remove(String(i));
+                        // TODO: move all courses above down one space above i
                         storage.set({classesStored: classesStored - 1}, function() {
                             updateCalendar();
                         });
