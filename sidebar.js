@@ -47,6 +47,11 @@ $(document).ready(function(){
 
     var obj = {};
     var storage = chrome.storage.sync;
+    storage.get(function(result) {
+        if(Object.keys(result).length === 0) {
+            clearStorage();
+        }
+    });
 
     // Updates the button values ("Add to Calendar" or "Remove")
     var updateBtnVals = function() {
@@ -55,10 +60,10 @@ $(document).ready(function(){
             var crns = [];
             var i;
             for(i in courses) {
-               crns.push(courses[i].CRN)
+               crns.push(courses[i].CRN);
             }
             $("tr[align='left']").each(function() {
-                var td = $(this)
+                var td = $(this);
                 var crn = $(this).children()[0].textContent;
                 if(crns.indexOf(crn) >= 0) {
                     td.children(".atcbutton").val("Remove");
@@ -67,8 +72,8 @@ $(document).ready(function(){
                     td.children(".atcbutton").val("Add to Calendar");
                 }
             });
-        });        
-    }
+        });
+    };
 
     // Add existing courses to the calendar
     var updateCalendar = function() {
@@ -116,7 +121,7 @@ $(document).ready(function(){
             } 
         });
     };
-    
+
 
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
@@ -277,7 +282,7 @@ $(document).ready(function(){
             var crn = $(this).parent("tr").children()[0].textContent;
 
             storage.get(function(result){
-                classesStored = result.classesStored
+                classesStored = result.classesStored;
                 for(i = 0; i < classesStored; i++) {
                     if(crn == result[i].CRN) {
                         storage.remove(String(i));
@@ -287,7 +292,7 @@ $(document).ready(function(){
                         break;
                     }
                 }
-            })
+            });
         }
    });
 });
