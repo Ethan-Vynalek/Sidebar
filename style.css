@@ -4,7 +4,7 @@
 }
 
 #sidebar {
-    width: 30%;
+    width: 29%;
     float: right;
     margin-top: 90px;
     background-color: #FAFAFA;
@@ -24,7 +24,6 @@
 .weekday {
     width: 16%;
     float: left;
-    border: 1px solid gray;
 }
 
 .timeslot {
@@ -32,6 +31,7 @@
     color: #fff;
     height: 40px !important;
     font-weight: normal !important;
+    width: 75px;
 }
 
 .halfhour {
