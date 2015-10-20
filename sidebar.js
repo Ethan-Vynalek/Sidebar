@@ -80,6 +80,7 @@ $(document).ready(function(){
     // Add existing courses to the calendar
     var updateCalendar = function() {
         $(".timebox").css("background-color","white");
+        $(".timebox").not(".th").not(".timeslot").text("");
         storage.get(function(result){
             var colors = ["#EA760A", "#FECA3D", "#9F1926", "#561857", "#0090B8", "#005E2C", "#CDD57B", "#A08326"];
             var courses = result;
@@ -92,11 +93,29 @@ $(document).ready(function(){
                     colorIndex += 1;
                     var courseTime = course.time.substring(1, course.time.length - 1).split("|");
                     var divs = parseTime(courseTime);
-                    var div;                   
+
+                    var div;
+                    var text = false;
+                    var num = false;
                     for(div in divs) {
-                        var id = divs[div];                       
-                        $(id).css("background-color", courseColor);                       
+                        var id = divs[div];
+                        if(id[0] === "#") {
+                            $(id).css("background-color",courseColor);
+                            if(text) {
+                                $(id).text(course.course.split(" ")[0]);
+                                num = true;
+                                text = false;
+                            }
+                            else if(num) {
+                                $(id).text(course.course.split(" ")[1]);
+                                num = false;
+                            }
+                        }
+                        else {
+                            text = true;
+                        }
                    }
+
                 }
             }
             updateCRN();    //want to update CRN every time a course is added
@@ -138,6 +157,7 @@ $(document).ready(function(){
         storage.clear();
         obj = {'classesStored': 0};
         storage.set(obj);
+        //$(".timebox").not(".th").not(".timeslot").text("");
         updateCalendar();
     };
 
@@ -229,11 +249,15 @@ $(document).ready(function(){
                 ampm = times.split("-")[1].slice(-2).toUpperCase();
 
                 // use this timeDifference value to figure out the middle
-                // to put the course name 
+                // to put the course name
                 var td = timeDifference(startHour, startMinute, endHour, endMinute);
+                var mid = td;
 
                 while(td !== 0) {
                     if(startHour === endHour && startMinute === endMinute) break;
+                    if(td*2 === mid + 1) {
+                        divs.push("text");
+                    }
                     divs.push(prefix + startHour + startMinute + ampm);
 
                     if(startMinute === "30") {

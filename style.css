@@ -17,6 +17,8 @@
     border: 1px solid gray;
     border-bottom: none;
     border-bottom: 1px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .weekday {
@@ -29,6 +31,7 @@
     background: #00397C !important;
     color: #fff;
     height: 40px !important;
+    font-weight: normal !important;
 }
 
 .halfhour {
@@ -36,7 +39,7 @@
 }
 
 #timeslot {
-    font-weight: normal;
+    font-weight: normal !important;
     background: #00397C !important;
     text-align: center;
     color: #fff;
