@@ -47,6 +47,8 @@ $(document).ready(function(){
 
     var obj = {};
     var storage = chrome.storage.sync;
+
+    // Checking for first time user
     storage.get(function(result) {
         if(Object.keys(result).length === 0) {
             clearStorage();
@@ -122,7 +124,7 @@ $(document).ready(function(){
         });
     };
 
-
+    // For Facebook sharing?
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -226,6 +228,8 @@ $(document).ready(function(){
                 }
                 ampm = times.split("-")[1].slice(-2).toUpperCase();
 
+                // use this timeDifference value to figure out the middle
+                // to put the course name 
                 var td = timeDifference(startHour, startMinute, endHour, endMinute);
 
                 while(td !== 0) {
@@ -236,15 +240,10 @@ $(document).ready(function(){
                         startMinute = "";
                         startHour = addOneHour(startHour);
                     }
-                    else {
-                        startMinute = "30";
-                    }
-
+                    else startMinute = "30";
                     td = timeDifference(startHour, startMinute, endHour, endMinute);
                 }
-
             }
-
         }
         return divs;
     };
