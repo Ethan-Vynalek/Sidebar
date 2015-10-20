@@ -64,6 +64,7 @@ $(document).ready(function(){
             for(i in courses) {
                crns.push(courses[i].CRN);
             }
+            console.log(crns);
             $("tr[align='left']").each(function() {
                 var td = $(this);
                 var crn = $(this).children()[0].textContent;
@@ -155,7 +156,7 @@ $(document).ready(function(){
     // Clears the sync storage
     var clearStorage = function() {
         storage.clear();
-        obj = {'classesStored': 0};
+        obj = {};
         storage.set(obj);
         //$(".timebox").not(".th").not(".timeslot").text("");
         updateCalendar();
@@ -255,7 +256,6 @@ $(document).ready(function(){
 
                 while(td !== 0) {
                     if(startHour === endHour && startMinute === endMinute) break;
-                    console.log(mid + 1);
                     if(td*2 === mid + 1) {
                         divs.push("text");
                     }
@@ -278,6 +278,7 @@ $(document).ready(function(){
     // Clicking on "Remove" will remove that course object from the storage.
     $(".atcbutton").click(function(){
         if($(this).val() === "Add to Calendar") {
+            console.log("adding to calendar");
             var tds = $(this).parent("tr").children();
             var classObj = {};
             classObj.CRN = tds[0].textContent.trim();
@@ -293,10 +294,7 @@ $(document).ready(function(){
             classObj.CCC = tds[10].textContent.trim();
 
             storage.get(function(result){
-                var classesStored = result.classesStored;
-                obj[classesStored] = classObj;
-                classesStored++;
-                obj.classesStored = classesStored;
+                obj[classObj.CRN] = classObj;
                 storage.set(obj, function() {
                     updateCalendar();
                 });
@@ -304,19 +302,9 @@ $(document).ready(function(){
         }
         else if($(this).val() === "Remove") {
             var crn = $(this).parent("tr").children()[0].textContent;
-
-            storage.get(function(result){
-                classesStored = result.classesStored;
-                for(i = 0; i < classesStored; i++) {
-                    if(crn == result[i].CRN) {
-                        storage.remove(String(i));
-                        // TODO: move all courses above down one space above i
-                        storage.set({classesStored: classesStored - 1}, function() {
-                            updateCalendar();
-                        });
-                        break;
-                    }
-                }
+            delete obj[crn];
+            storage.remove(String(crn), function() {
+                updateCalendar();
             });
         }
    });
