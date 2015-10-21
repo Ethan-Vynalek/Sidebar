@@ -23,7 +23,7 @@ $(document).ready(function(){
     var $lastTD = $("tr").find("td:last");
     $lastTD.each(function(index) {
         if($(this).children(0).prop("tagName") === "FONT") {
-            $(this).attr("colspan", String(parseInt($(this).tatr("colspan")) + 1));
+            $(this).attr("colspan", String(parseInt($(this).attr("colspan")) + 1));
         }
         else if($(this).children(0).prop("tagName") === "FORM"){
             $(this).after("<input type='submit' value='Add to Calendar' class='button atcbutton'>");
