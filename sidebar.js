@@ -2,10 +2,6 @@ $(document).ready(function(){
 
     console.log("Document Ready"); // for debugging purposes
 
-    ////////////////////////
-    // INSERTING ELEMENTS //
-    ////////////////////////
-
     // Highlight Hovered TRs
     $("#coursetable tbody tr td:first-child").each(function(index) {
         if(typeof $(this).attr("colspan") === "undefined") {
@@ -27,7 +23,7 @@ $(document).ready(function(){
     var $lastTD = $("tr").find("td:last");
     $lastTD.each(function(index) {
         if($(this).children(0).prop("tagName") === "FONT") {
-            $(this).attr("colspan", "14");
+            $(this).attr("colspan", String(parseInt($(this).attr("colspan")) + 1));
         }
         else if($(this).children(0).prop("tagName") === "FORM"){
             $(this).after("<input type='submit' value='Add to Calendar' class='button atcbutton'>");
@@ -52,9 +48,40 @@ $(document).ready(function(){
     var obj = {};
     var storage = chrome.storage.sync;
 
-     // Add existing courses to the calendar
+    // Checking for first time user
+    storage.get(function(result) {
+        if(Object.keys(result).length === 0) {
+            clearStorage();
+        }
+    });
+
+    // Updates the button values ("Add to Calendar" or "Remove")
+    var updateBtnVals = function() {
+        storage.get(function(result){
+            var courses = result;
+            var crns = [];
+            var i;
+            for(i in courses) {
+               crns.push(courses[i].CRN);
+            }
+            console.log(crns);
+            $("tr[align='left']").each(function() {
+                var td = $(this);
+                var crn = $(this).children()[0].textContent;
+                if(crns.indexOf(crn) >= 0) {
+                    td.children(".atcbutton").val("Remove");
+                }
+                else {
+                    td.children(".atcbutton").val("Add to Calendar");
+                }
+            });
+        });
+    };
+
+    // Add existing courses to the calendar
     var updateCalendar = function() {
         $(".timebox").css("background-color","white");
+        $(".timebox").not(".th").not(".timeslot").text("");
         storage.get(function(result){
             var colors = ["#EA760A", "#FECA3D", "#9F1926", "#561857", "#0090B8", "#005E2C", "#CDD57B", "#A08326"];
             var courses = result;
@@ -67,14 +94,33 @@ $(document).ready(function(){
                     colorIndex += 1;
                     var courseTime = course.time.substring(1, course.time.length - 1).split("|");
                     var divs = parseTime(courseTime);
-                    var div;                   
+
+                    var div;
+                    var text = false;
+                    var num = false;
                     for(div in divs) {
-                        var id = divs[div];                       
-                        $(id).css("background-color", courseColor);                       
+                        var id = divs[div];
+                        if(id[0] === "#") {
+                            $(id).css("background-color",courseColor);
+                            if(text) {
+                                $(id).text(course.course.split(" ")[0]);
+                                num = true;
+                                text = false;
+                            }
+                            else if(num) {
+                                $(id).text(course.course.split(" ")[1]);
+                                num = false;
+                            }
+                        }
+                        else {
+                            text = true;
+                        }
                    }
+
                 }
             }
             updateCRN();    //want to update CRN every time a course is added
+            updateBtnVals();
         });
     };
     
@@ -98,7 +144,7 @@ $(document).ready(function(){
         });
     };
 
-
+    // For Facebook sharing?
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -110,8 +156,9 @@ $(document).ready(function(){
     // Clears the sync storage
     var clearStorage = function() {
         storage.clear();
-        obj = {'classesStored': 0};
+        obj = {};
         storage.set(obj);
+        //$(".timebox").not(".th").not(".timeslot").text("");
         updateCalendar();
     };
 
@@ -202,55 +249,63 @@ $(document).ready(function(){
                 }
                 ampm = times.split("-")[1].slice(-2).toUpperCase();
 
+                // use this timeDifference value to figure out the middle
+                // to put the course name
                 var td = timeDifference(startHour, startMinute, endHour, endMinute);
+                var mid = Math.floor(td);
 
                 while(td !== 0) {
                     if(startHour === endHour && startMinute === endMinute) break;
+                    if(td*2 === mid + 1) {
+                        divs.push("text");
+                    }
                     divs.push(prefix + startHour + startMinute + ampm);
 
                     if(startMinute === "30") {
                         startMinute = "";
                         startHour = addOneHour(startHour);
                     }
-                    else {
-                        startMinute = "30";
-                    }
-
+                    else startMinute = "30";
                     td = timeDifference(startHour, startMinute, endHour, endMinute);
                 }
-
             }
-
         }
         return divs;
     };
 
     // Clicking on "Add to Calendar" will create a course object of the current
     // class and then add that object to chrome's sync storage.
+    // Clicking on "Remove" will remove that course object from the storage.
     $(".atcbutton").click(function(){
-        var tds = $(this).parent("tr").children();
-        var classObj = {};
-        classObj.CRN = tds[0].textContent.trim();
-        classObj.course = tds[1].textContent.trim();
-        classObj.title = tds[2].textContent.trim();
-        classObj.time = tds[3].textContent.replace(/\n/g, "|");
-        classObj.room = tds[4].textContent.replace(/\n/g, "|");
-        classObj.instructor = tds[5].textContent.replace(/\n/g, "");
-        classObj.seatsAvail = tds[6].textContent.trim();
-        classObj.waitList = tds[7].textContent.trim();
-        classObj.seatsRes = tds[8].textContent.trim();
-        classObj.prm = tds[9].textContent.trim();
-        classObj.CCC = tds[10].textContent.trim();
+        if($(this).val() === "Add to Calendar") {
+            console.log("adding to calendar");
+            var tds = $(this).parent("tr").children();
+            var classObj = {};
+            classObj.CRN = tds[0].textContent.trim();
+            classObj.course = tds[1].textContent.trim();
+            classObj.title = tds[2].textContent.trim();
+            classObj.time = tds[3].textContent.replace(/\n/g, "|");
+            classObj.room = tds[4].textContent.replace(/\n/g, "|");
+            classObj.instructor = tds[5].textContent.replace(/\n/g, "");
+            classObj.seatsAvail = tds[6].textContent.trim();
+            classObj.waitList = tds[7].textContent.trim();
+            classObj.seatsRes = tds[8].textContent.trim();
+            classObj.prm = tds[9].textContent.trim();
+            classObj.CCC = tds[10].textContent.trim();
 
-        storage.get(function(result){
-            var classesStored = result.classesStored;
-            obj[classesStored] = classObj;
-            classesStored++;
-            obj.classesStored = classesStored;
-            storage.set(obj, function() {
+            storage.get(function(result){
+                obj[classObj.CRN] = classObj;
+                storage.set(obj, function() {
+                    updateCalendar();
+                });
+            });
+        }
+        else if($(this).val() === "Remove") {
+            var crn = $(this).parent("tr").children()[0].textContent;
+            delete obj[crn];
+            storage.remove(String(crn), function() {
                 updateCalendar();
             });
-        });
-    });
-    // *** END CHROME SYNC STORAGE ***
+        }
+   });
 });
