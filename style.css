@@ -5,8 +5,9 @@
 
 #sidebar {
     width: 29%;
-    float: right;
     margin-top: 90px;
+    margin-left: 70%;
+    position: fixed;
     background-color: #FAFAFA;
 }
 
