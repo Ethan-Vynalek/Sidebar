@@ -64,7 +64,6 @@ $(document).ready(function(){
             for(i in courses) {
                crns.push(courses[i].CRN);
             }
-            console.log(crns);
             $("tr[align='left']").each(function() {
                 var td = $(this);
                 var crn = $(this).children()[0].textContent;
@@ -278,7 +277,6 @@ $(document).ready(function(){
     // Clicking on "Remove" will remove that course object from the storage.
     $(".atcbutton").click(function(){
         if($(this).val() === "Add to Calendar") {
-            console.log("adding to calendar");
             var tds = $(this).parent("tr").children();
             var classObj = {};
             classObj.CRN = tds[0].textContent.trim();
