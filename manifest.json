@@ -25,7 +25,8 @@
     ],
 
     "web_accessible_resources": [
-        "search-logic/courseList.JSON"
+        "search-logic/courseList.JSON",
+        "images/icon.png"
     ],
 
     "content_scripts": [
