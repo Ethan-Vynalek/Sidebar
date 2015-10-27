@@ -1,12 +1,15 @@
 import mechanize
 import json
+import requests
+import datetime
 from lxml import html
 from bs4 import BeautifulSoup
 
-# command to run script every 5 minutes
-# while sleep 300; python script.py; done
+# command to run script every hour
+# while sleep 3600; python script.py; done
 
 URL = "https://www.banner.bucknell.edu/BANPRD/hwzkschd.P_Bucknell_SchedbyDept"
+JSONURL = "https://api.myjson.com/bins/3vg1s"
 CRN = 0
 COURSE = 1
 TITLE = 2
@@ -23,7 +26,7 @@ br = mechanize.Browser()
 br.set_handle_robots(False)
 url = br.open(URL)
 
-# 70 departments... uh oh
+# 70 departments
 courseSyms = ["ACFM", "ANBE", "ANTH", "ARBC", "ARTH", "ARST", "ASTR", "BIOL",
            "BMEG", "OFFL", "OFFD", "OFFF", "OFFAT", "OFFDC", "CHEG", "CHEM",
            "CHIN", "CEEG", "CLAS", "CSCI", "DANC", "EAST", "ECON", "EDUC",
@@ -68,6 +71,24 @@ for course in courseSyms:
 
     br.back()
 
+r = requests.put(JSONURL, json=courses)
 
-dumps = json.dumps(courses, sort_keys=True, indent=4, separators=(',', ': '))
-print dumps
+f = open('scrape/database.log', 'a')
+
+# Success
+if(int(r.status_code) == 200):
+    output = "updated successfully on "
+    output += str(datetime.datetime.now().date())
+    output += " at "
+    output += str(datetime.datetime.now().time())
+    output += "\n"
+    f.write(output)
+
+# Failure
+else:
+    output = "failed update on "
+    output += str(datetime.datetime.now().date())
+    output += " at "
+    output += str(datetime.datetime.now().time())
+    output += "\n"
+    f.write(output)
