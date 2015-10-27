@@ -10,3 +10,6 @@ To install and run:
 4. Navigate to the `course-selection-sidebar` directory and select it.
 
 If the extension is valid, it'll be loaded up and active right away! If it's invalid, an error message will be displayed at the top of the page. Correct the error, and try again.
+
+## Other Information
+* Our class list is stored on [myjson.com](http://myjson.com/) as a JSON object at this location: https://api.myjson.com/bins/3vg1s. The API for this website is located [here](https://api.myjson.com/bins/3vg1s).
