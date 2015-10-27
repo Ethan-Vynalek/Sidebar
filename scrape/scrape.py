@@ -4,8 +4,8 @@ import requests
 from lxml import html
 from bs4 import BeautifulSoup
 
-# command to run script every 5 minutes
-# while sleep 300; python script.py; done
+# command to run script every hour
+# while sleep 3600; python script.py; done
 
 URL = "https://www.banner.bucknell.edu/BANPRD/hwzkschd.P_Bucknell_SchedbyDept"
 JSONURL = "https://api.myjson.com/bins/3vg1s"

@@ -4,7 +4,7 @@ var exClasses;
 // set to true to get logic debugging information
 var debug = true;
 
-$.getJSON("https://api.myjson.com/bins/2l7mc", function(response) {
+$.getJSON("https://api.myjson.com/bins/3vg1s", function(response) {
     exClasses = response;
     if(debug) {
         console.log("CRNSearch");
