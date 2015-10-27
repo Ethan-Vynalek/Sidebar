@@ -38,7 +38,7 @@ $(document).ready(function(){
     $("#sidebar").accordion();
     // Adding the logo
     imageURL = chrome.extension.getURL('images/icon.png');
-    $("#sidebar").prepend("<img id='cseIcon' src='" + imageURL + "' height='80' width='80'>")
+    $("#sidebar").prepend("<img id='cseIcon' src='" + imageURL + "' height='80' width='80'>");
     $("#cseIcon").after("<h3 class='iconTitle'>Course Selection<br>Sidebar</h3>");
     document.getElementById('export-button').onclick = function() {
         window.confirm("You are exporting");
@@ -89,7 +89,7 @@ $(document).ready(function(){
             var courses = result;
             var i;
             var colorIndex = 0;
-            for(i in courses) {               
+            for(i in courses) {
                 var course = courses[i];
                 if(isNaN(Number(course))) {
                     var courseColor = colors[colorIndex%8];
@@ -125,7 +125,7 @@ $(document).ready(function(){
             updateBtnVals();
         });
     };
-    
+
     updateCalendar();
 
      // Add existing courses to the calendar
@@ -142,7 +142,7 @@ $(document).ready(function(){
                     $("CRN").css("content",courseCRN);
                     document.getElementById("CRNs").innerHTML += courseCRN;
                 }
-            } 
+            }
         });
     };
 

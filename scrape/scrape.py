@@ -1,5 +1,6 @@
 import mechanize
 import json
+import requests
 from lxml import html
 from bs4 import BeautifulSoup
 
@@ -7,6 +8,7 @@ from bs4 import BeautifulSoup
 # while sleep 300; python script.py; done
 
 URL = "https://www.banner.bucknell.edu/BANPRD/hwzkschd.P_Bucknell_SchedbyDept"
+JSONURL = "https://api.myjson.com/bins/3vg1s"
 CRN = 0
 COURSE = 1
 TITLE = 2
@@ -23,7 +25,7 @@ br = mechanize.Browser()
 br.set_handle_robots(False)
 url = br.open(URL)
 
-# 70 departments... uh oh
+# 70 departments
 courseSyms = ["ACFM", "ANBE", "ANTH", "ARBC", "ARTH", "ARST", "ASTR", "BIOL",
            "BMEG", "OFFL", "OFFD", "OFFF", "OFFAT", "OFFDC", "CHEG", "CHEM",
            "CHIN", "CEEG", "CLAS", "CSCI", "DANC", "EAST", "ECON", "EDUC",
@@ -68,6 +70,4 @@ for course in courseSyms:
 
     br.back()
 
-
-dumps = json.dumps(courses, sort_keys=True, indent=4, separators=(',', ': '))
-print dumps
+r = requests.put(JSONURL, json=courses)
