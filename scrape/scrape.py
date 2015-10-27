@@ -1,6 +1,7 @@
 import mechanize
 import json
 import requests
+import datetime
 from lxml import html
 from bs4 import BeautifulSoup
 
@@ -71,3 +72,23 @@ for course in courseSyms:
     br.back()
 
 r = requests.put(JSONURL, json=courses)
+
+f = open('scrape/database.log', 'a')
+
+# Success
+if(int(r.status_code) == 200):
+    output = "updated successfully on "
+    output += str(datetime.datetime.now().date())
+    output += " at "
+    output += str(datetime.datetime.now().time())
+    output += "\n"
+    f.write(output)
+
+# Failure
+else:
+    output = "failed update on "
+    output += str(datetime.datetime.now().date())
+    output += " at "
+    output += str(datetime.datetime.now().time())
+    output += "\n"
+    f.write(output)
