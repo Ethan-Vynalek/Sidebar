@@ -69,6 +69,11 @@ $(document).ready(function(){
             }
             $("tr[align='left']").each(function() {
                 var td = $(this);
+                
+                // FOR INSERTING INFORMATION LINK
+                //$(this).children()[0].each(function() {
+                //    $(this).after("<td>hello</td>"); 
+                //});
                 var crn = $(this).children()[0].textContent;
                 if(crns.indexOf(crn) >= 0) {
                     td.children(".atcbutton").val("Remove");
