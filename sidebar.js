@@ -170,7 +170,8 @@ $(document).ready(function(){
     };
 
     // TEMPORARY buttons to show and clear the storage for testing purposes
-    $('.page_header').after('<button id="clear">clear storage</button><button id="print">print storage</button>');
+    $("#calendar").before("<button id='clear'>Clear Calendar</button>");
+    $('.page_header').after('<button id="print">print storage</button>');
     $('#clear').click(function(){
         clearStorage();
         printStorage();
