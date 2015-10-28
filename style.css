@@ -29,8 +29,13 @@
     height: 30px;
     width: 150px;
     font-size: 14px;
-    color: rgb(82, 130, 170);
+    color: #5282AA;
     margin-bottom: 20px;
+}
+
+#clear:hover {
+    background-color: #5282AA;
+    color: #FAFAFA;
 }
 
 .timebox {

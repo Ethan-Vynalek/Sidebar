@@ -170,13 +170,9 @@ $(document).ready(function(){
     };
 
     // TEMPORARY buttons to show and clear the storage for testing purposes
-    $("#calendar").before("<button id='clear'>Clear Calendar</button>");
-    $('.page_header').after('<button id="print">print storage</button>');
+    $("#calendar").before("<button id='clear'>Clear Calendar</button>"); 
     $('#clear').click(function(){
         clearStorage();
-        printStorage();
-    });
-    $("#print").click(function(){
         printStorage();
     });
 
