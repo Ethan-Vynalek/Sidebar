@@ -47,15 +47,28 @@ $(document).ready(function(){
       document.getElementById('import-button').onclick = function() {
         window.confirm("You are importing");
     };
-    
+
     // Information Tab
-    $("tr[align='center']").children("th:nth-child(13)").after("<th class='ddlabel' scope='row'>More Info</th>")
-    $("tr[align='left']").children("td:nth-child(13)").after("<td class='more'><a>More</a><div class='popup'><ul><li>Wait List:</li><li>Reserved Seats:</li><li>Course Description:</li><li>Course Guide:</li><li>Books:</li></ul></div></td>");
+    $("tr[align='center']").children("th:nth-child(13)").after("<th class='ddlabel' scope='row'>More Info</th>");
+    $("tr[align='left']").children("td:nth-child(13)").after("<td class='more'><a>More</a><div class='popup'><ul class='popupul'><li class='wl'></li><li class='rs'></li><li class='prm'></li><li class='cd'></li><li class='cg'></li></ul></div></td>");
+    $("tr[align='left']").each(function(){
+        var waitList = $(this).children("td:nth-child(8)").text();
+        var resSeats = $(this).children("td:nth-child(9)").text();
+        var prm = $(this).children("td:nth-child(10)").text();
+        var desc = $(this).children("td:nth-child(12)").children("a:nth-child(1)").attr("href");
+        var guide = $(this).children("td:nth-child(13)").children("a:nth-child(1)").attr("href");
+        $(this).find(".wl").text("Wait List: " + waitList);
+        $(this).find(".rs").text("Reserved Seats: " + resSeats);
+        $(this).find(".prm").text("Permission: " + prm);
+        $(this).find(".cd").append("<a href='" + desc + "'>Description</a>");
+        if(typeof guide === "undefined") $(this).find(".cg").text("No Guide");
+        else $(this).find(".cg").append("<a href='" + guide + "'>Guide</a>");
+    });
     $(".more").mouseover(function() {
         $(this).children(".popup").show();
     }).mouseout(function() {
         $(this).children(".popup").hide();
-    })
+    });
 
     var obj = {};
     var storage = chrome.storage.sync;
@@ -78,7 +91,7 @@ $(document).ready(function(){
             }
             $("tr[align='left']").each(function() {
                 var td = $(this);
-                
+
                 var crn = $(this).children()[0].textContent;
                 if(crns.indexOf(crn) >= 0) {
                     td.children(".atcbutton").val("Remove");
@@ -180,7 +193,7 @@ $(document).ready(function(){
     };
 
     // TEMPORARY buttons to show and clear the storage for testing purposes
-    $("#calendar").prepend("<button id='clear'>Clear Calendar</button><br>"); 
+    $("#calendar").prepend("<button id='clear'>Clear Calendar</button><br>");
     $('#clear').click(function(){
         clearStorage();
         printStorage();
