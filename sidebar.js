@@ -47,6 +47,15 @@ $(document).ready(function(){
       document.getElementById('import-button').onclick = function() {
         window.confirm("You are importing");
     };
+    
+    // Information Tab
+    $("tr[align='center']").children("th:nth-child(13)").after("<th class='ddlabel' scope='row'>More Info</th>")
+    $("tr[align='left']").children("td:nth-child(13)").after("<td class='more'><a>More</a><div class='popup'><ul><li>Wait List:</li><li>Reserved Seats:</li><li>Course Description:</li><li>Course Guide:</li><li>Books:</li></ul></div></td>");
+    $(".more").mouseover(function() {
+        $(this).children(".popup").show();
+    }).mouseout(function() {
+        $(this).children(".popup").hide();
+    })
 
     var obj = {};
     var storage = chrome.storage.sync;
@@ -70,10 +79,6 @@ $(document).ready(function(){
             $("tr[align='left']").each(function() {
                 var td = $(this);
                 
-                // FOR INSERTING INFORMATION LINK
-                //$(this).children()[0].each(function() {
-                //    $(this).after("<td>hello</td>"); 
-                //});
                 var crn = $(this).children()[0].textContent;
                 if(crns.indexOf(crn) >= 0) {
                     td.children(".atcbutton").val("Remove");
@@ -175,7 +180,7 @@ $(document).ready(function(){
     };
 
     // TEMPORARY buttons to show and clear the storage for testing purposes
-    $("#calendar").before("<button id='clear'>Clear Calendar</button>"); 
+    $("#calendar").prepend("<button id='clear'>Clear Calendar</button><br>"); 
     $('#clear').click(function(){
         clearStorage();
         printStorage();
