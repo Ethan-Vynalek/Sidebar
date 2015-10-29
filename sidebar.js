@@ -23,7 +23,7 @@ $(document).ready(function(){
     var $lastTD = $("tr").find("td:last");
     $lastTD.each(function(index) {
         if($(this).children(0).prop("tagName") === "FONT") {
-            $(this).attr("colspan", String(parseInt($(this).attr("colspan")) + 1));
+            $(this).attr("colspan", String(parseInt($(this).attr("colspan")) - 3));
         }
         else if($(this).children(0).prop("tagName") === "FORM"){
             $(this).after("<input type='submit' value='Add to Calendar' class='button atcbutton'>");
@@ -48,6 +48,39 @@ $(document).ready(function(){
         window.confirm("You are importing");
     };
 
+    // Adding "More Info" and removing irrelevant information
+    $("tr[align='center']").children("th:nth-child(13)").after("<th class='ddlabel' scope='row'>More Info</th>");
+    $("tr[align='center']").children("th:nth-child(13)").remove();
+    $("tr[align='center']").children("th:nth-child(12)").remove();
+    $("tr[align='center']").children("th:nth-child(10)").remove();
+    $("tr[align='center']").children("th:nth-child(9)").remove();
+    $("tr[align='center']").children("th:nth-child(8)").remove();
+    $("tr[align='left']").children("td:nth-child(13)").after("<td class='more'><a>More</a><div class='popup'><ul class='popupul'><li class='wl'></li><li class='rs'></li><li class='prm'></li><li class='cd'></li><li class='cg'></li></ul></div></td>");
+    $("tr[align='left']").each(function(){
+        var guide = $(this).children("td:nth-child(13)").children("a:nth-child(1)").attr("href");
+        $(this).children("td:nth-child(13)").remove();
+        var desc = $(this).children("td:nth-child(12)").children("a:nth-child(1)").attr("href");
+        $(this).children("td:nth-child(12)").remove();
+        var prm = $(this).children("td:nth-child(10)").text();
+        $(this).children("td:nth-child(10)").remove();
+        var resSeats = $(this).children("td:nth-child(9)").text();
+        $(this).children("td:nth-child(9)").remove();
+        var waitList = $(this).children("td:nth-child(8)").text();
+        $(this).children("td:nth-child(8)").remove();
+        $(this).find(".wl").text("Wait List: " + waitList);
+        $(this).find(".rs").text("Reserved Seats: " + resSeats);
+        $(this).find(".prm").text("Permission: " + prm);
+        if(typeof desc === "undefined") $(this).find(".cd").text("No Description");
+        else $(this).find(".cd").append("<a href='" + desc + "'>Description</a>");
+        if(typeof guide === "undefined") $(this).find(".cg").text("No Guide");
+        else $(this).find(".cg").append("<a href='" + guide + "'>Guide</a>");
+    });
+    $(".more").mouseover(function() {
+        $(this).children(".popup").show();
+    }).mouseout(function() {
+        $(this).children(".popup").hide();
+    });
+
     var obj = {};
     var storage = chrome.storage.sync;
 
@@ -69,6 +102,7 @@ $(document).ready(function(){
             }
             $("tr[align='left']").each(function() {
                 var td = $(this);
+
                 var crn = $(this).children()[0].textContent;
                 if(crns.indexOf(crn) >= 0) {
                     td.children(".atcbutton").val("Remove");
@@ -170,12 +204,9 @@ $(document).ready(function(){
     };
 
     // TEMPORARY buttons to show and clear the storage for testing purposes
-    $('.page_header').after('<button id="clear">clear storage</button><button id="print">print storage</button>');
+    $("#calendar").prepend("<button id='clear'>Clear Calendar</button><br>");
     $('#clear').click(function(){
         clearStorage();
-        printStorage();
-    });
-    $("#print").click(function(){
         printStorage();
     });
 

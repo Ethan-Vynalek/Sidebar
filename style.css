@@ -15,12 +15,35 @@
     float: left;
 }
 
+.popup {
+    display: none;
+    position: absolute;
+    border: 1px solid #000;
+    background-color: #FAFAFA;
+    padding: 10px;
+}
+
 .iconTitle {
     margin: 0;
     font-size: 32px;
     margin-top: 0px;
     margin-left: 90px;
     color: #00397C;
+}
+
+#clear {
+    background-color: #D5DDE7;
+    border: none;
+    height: 30px;
+    width: 150px;
+    font-size: 14px;
+    color: #5282AA;
+    margin-bottom: 20px;
+}
+
+#clear:hover {
+    background-color: #5282AA;
+    color: #FAFAFA;
 }
 
 .timebox {
