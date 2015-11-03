@@ -340,4 +340,41 @@ $(document).ready(function(){
             });
         }
    });
+   
+   // http://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript
+    // Compile schedule data into an ObjectURL, return the URL used to download it
+    var schedule_data = null,
+        make_file = function(schedule_data) {
+            var blob = new Blob([schedule_data], {type: 'text/plain'});
+            
+            // If we are replacing a previously generated file we need to
+            // manually revoke the object URL to avoid memory leaks.
+            if ( schedule_data !== null ) {
+                window.URL.revokeObjectURL(blob);
+            }
+            
+            url = window.URL.createObjectURL(blob);
+            
+            //returns a URL you can use as an href
+            return url;
+        };
+        
+    var data = "Subject,Start Date,Start Time,End Date,End Time,All Day Event,Description,Location,Private\n";
+    storage.get( function(result) {
+       var courses = result;
+       console.log( Object.getOwnPropertyNames( courses ) );
+       for ( var i=0; i<courses["classesStored"]; i++ ) {
+           var temp = courses[i].course + "," + "1/1/16" + "," + courses[i].time + "," + courses[i].time + "," + "False" + "," + courses[i].title + "," + courses[i].room + "," + "False" + "," + "False" + "\n";
+           data += temp;
+       }
+       console.log(data);
+    });
+    
+    var link = document.createElement("a"); 
+    document.getElementById("export-button").onclick = function () {
+	link.download = "ScheduleData.csv";
+	link.href = make_file(data);
+	link.click();
+    }; 
+   
 });
