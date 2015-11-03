@@ -21,6 +21,9 @@ WAIT = 7
 RES = 8
 PRM = 9
 CCC = 10
+DESC = 11
+GUIDE = 12
+BOOKS = 13
 
 br = mechanize.Browser()
 br.set_handle_robots(False)
@@ -70,6 +73,17 @@ for course in courseSyms:
             courses[index]["seatsRes"] = tds[RES].get_text().strip()
             courses[index]["prm"] = tds[PRM].get_text().strip()
             courses[index]["CCC"] = tds[CCC].get_text().strip()
+            desc = tds[DESC].find('a')
+            if desc is not None:
+                courses[index]["descLink"] = desc.get('href')
+            else:
+                courses[index]["descLink"] = "NONE"
+            guide = tds[GUIDE].find('a')
+            if guide is not None:
+                courses[index]["guideLink"] = guide.get('href')
+            else:
+                courses[index]["guideLink"] = "NONE"
+            courses[index]["booksVal"] = tds[BOOKS].find('form').find('input', {'name':'courseXml'}).get('value')
             index = index + 1
 
     br.back()
@@ -80,6 +94,7 @@ f = open('scrape/database.log', 'a')
 
 # Success
 if(int(r.status_code) == 200):
+    print "Success"
     output = "updated successfully on "
     output += str(datetime.datetime.now().date())
     output += " at "
@@ -89,6 +104,9 @@ if(int(r.status_code) == 200):
 
 # Failure
 else:
+    print "Failure"
+    print "Status Code: " + str(r.status_code)
+    print "Content: " + str(r.content)
     output = "failed update on "
     output += str(datetime.datetime.now().date())
     output += " at "
