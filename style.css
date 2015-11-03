@@ -4,10 +4,46 @@
 }
 
 #sidebar {
-    width: 30%;
-    float: right;
-    margin-top: 90px;
-    background-color: orange;
+    width: 29%;
+    margin-top: 8px;
+    margin-left: 70%;
+    position: fixed;
+    background-color: #FAFAFA;
+}
+
+#cseIcon {
+    float: left;
+}
+
+.popup {
+    display: none;
+    position: absolute;
+    border: 1px solid #000;
+    background-color: #FAFAFA;
+    padding: 10px;
+}
+
+.iconTitle {
+    margin: 0;
+    font-size: 32px;
+    margin-top: 0px;
+    margin-left: 90px;
+    color: #00397C;
+}
+
+#clear {
+    background-color: #D5DDE7;
+    border: none;
+    height: 30px;
+    width: 150px;
+    font-size: 14px;
+    color: #5282AA;
+    margin-bottom: 20px;
+}
+
+#clear:hover {
+    background-color: #5282AA;
+    color: #FAFAFA;
 }
 
 .timebox {
@@ -17,18 +53,21 @@
     border: 1px solid gray;
     border-bottom: none;
     border-bottom: 1px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .weekday {
     width: 16%;
     float: left;
-    border: 1px solid gray;
 }
 
 .timeslot {
     background: #00397C !important;
     color: #fff;
     height: 40px !important;
+    font-weight: normal !important;
+    width: 75px;
 }
 
 .halfhour {
@@ -36,7 +75,7 @@
 }
 
 #timeslot {
-    font-weight: normal;
+    font-weight: normal !important;
     background: #00397C !important;
     text-align: center;
     color: #fff;
@@ -112,3 +151,6 @@
     text-decoration: none;
 }
 
+.CRNlist {
+    content: "";
+}
