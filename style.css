@@ -138,6 +138,19 @@
     text-decoration: none;
 }
 
+#auth-button {
+    padding:9px 15px;
+    display:block;
+    border-radius:3px 3px 3px 0px;
+    background:#D5DDE7;
+    font-size:16px;
+    font-weight:600;
+    color:#5282AA;
+    transition:all linear 0.15s;
+    font-family: "Avenir W01", sans-serif;
+    text-decoration: none;
+}
+
 .CRNlist {
     content: "";
 }
