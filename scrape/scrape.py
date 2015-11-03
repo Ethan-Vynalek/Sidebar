@@ -59,8 +59,7 @@ for course in courseSyms:
     for tr in trs:
         tds= tr.findChildren("td")
         if (tds[0].get_text().isdigit()):
-            # description and guide need the link
-            # books needs the value attribute
+            # could use some trimming
             courses[index] = {}
             courses[index]["CRN"] = tds[CRN].get_text().strip()
             courses[index]["course"] = tds[COURSE].get_text().strip()
@@ -75,15 +74,15 @@ for course in courseSyms:
             courses[index]["CCC"] = tds[CCC].get_text().strip()
             desc = tds[DESC].find('a')
             if desc is not None:
-                courses[index]["descLink"] = desc.get('href')
+                courses[index]["descLink"] = str(desc.get('href'))
             else:
                 courses[index]["descLink"] = "NONE"
             guide = tds[GUIDE].find('a')
             if guide is not None:
-                courses[index]["guideLink"] = guide.get('href')
+                courses[index]["guideLink"] = str(guide.get('href'))
             else:
                 courses[index]["guideLink"] = "NONE"
-            courses[index]["booksVal"] = tds[BOOKS].find('form').find('input', {'name':'courseXml'}).get('value')
+            courses[index]["bookTerm"] = str(tds[BOOKS].find('form').find('input', {'name':'courseXml'}).get('value'))[-32:][:3]
             index = index + 1
 
     br.back()
