@@ -358,7 +358,7 @@ $(document).ready(function(){
             //returns a URL you can use as an href
             return url;
         };
-    
+
     var data = "Subject,Start Date,Start Time,End Date,End Time,All Day Event,Description,Location,Private\n";
     storage.get( function(result) {
        var courses = result;
@@ -375,5 +375,6 @@ $(document).ready(function(){
 	link.download = "ScheduleData.csv";
 	link.href = make_file(data);
 	link.click();
-    };
+    }; 
+   
 });
