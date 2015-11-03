@@ -56,6 +56,8 @@ for course in courseSyms:
     for tr in trs:
         tds= tr.findChildren("td")
         if (tds[0].get_text().isdigit()):
+            # description and guide need the link
+            # books needs the value attribute
             courses[index] = {}
             courses[index]["CRN"] = tds[CRN].get_text().strip()
             courses[index]["course"] = tds[COURSE].get_text().strip()
@@ -64,6 +66,7 @@ for course in courseSyms:
             courses[index]["room"] = tds[ROOM].get_text().replace('\n', '|')
             courses[index]["instructor"] = tds[INSTR].get_text().replace('\n', '')
             courses[index]["seatsAvail"] = tds[SEATS].get_text().strip()
+            courses[index]["waitList"] = tds[WAIT].get_text().strip();
             courses[index]["seatsRes"] = tds[RES].get_text().strip()
             courses[index]["prm"] = tds[PRM].get_text().strip()
             courses[index]["CCC"] = tds[CCC].get_text().strip()

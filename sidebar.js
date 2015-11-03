@@ -285,7 +285,7 @@ $(document).ready(function(){
                 // use this timeDifference value to figure out the middle
                 // to put the course name
                 var td = timeDifference(startHour, startMinute, endHour, endMinute);
-                
+
                 var mid = Math.floor(td);
 
                 while(td !== 0) {
@@ -293,9 +293,8 @@ $(document).ready(function(){
                     if(td*2 === mid + 1) {
                         divs.push("text");
                     }
-                    console.log(Number(startHour));
                     if (ampm === "PM" && 
-                       (Number(startHour) > Number(endHour) || Number(endHour) === 12) && 
+                       (Number(startHour) > Number(endHour) || Number(endHour) === 12) &&
                        Number(startHour) !== 12) {
                         divs.push(prefix + startHour + startMinute + "AM");
                     }
