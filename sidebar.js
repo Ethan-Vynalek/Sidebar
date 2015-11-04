@@ -293,7 +293,7 @@ $(document).ready(function(){
                     if(td*2 === mid + 1) {
                         divs.push("text");
                     }
-                    if (ampm === "PM" && 
+                    if (ampm === "PM" &&
                        (Number(startHour) > Number(endHour) || Number(endHour) === 12) &&
                        Number(startHour) !== 12) {
                         divs.push(prefix + startHour + startMinute + "AM");
@@ -333,12 +333,25 @@ $(document).ready(function(){
             classObj.prm = tds[9].textContent.trim();
             classObj.CCC = tds[10].textContent.trim();
 
-            storage.get(function(result){
-                obj[classObj.CRN] = classObj;
-                storage.set(obj, function() {
-                    updateCalendar();
+            var conflict = false;
+            var cTimes = parseTime(classObj.time.substring(1, classObj.time.length - 1).split("|"));
+            for (i in cTimes) {
+                var cTime = cTimes[i];
+                if (cTime.trim() !== "text" && $(cTime).css("background-color").trim() !== "rgb(255, 255, 255)") {
+                    alert("Cannot add " + classObj.course + " because another class is already scheduled for that time.");
+                    conflict = true;
+                    break;
+                }
+            }
+
+            if(!conflict) {
+                storage.get(function(result){
+                    obj[classObj.CRN] = classObj;
+                    storage.set(obj, function() {
+                        updateCalendar();
+                    });
                 });
-            });
+            }
         }
         else if($(this).val() === "Remove") {
             var crn = $(this).parent("tr").children()[0].textContent;
