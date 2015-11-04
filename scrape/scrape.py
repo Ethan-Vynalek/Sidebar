@@ -21,6 +21,9 @@ WAIT = 7
 RES = 8
 PRM = 9
 CCC = 10
+DESC = 11
+GUIDE = 12
+BOOKS = 13
 
 br = mechanize.Browser()
 br.set_handle_robots(False)
@@ -56,6 +59,7 @@ for course in courseSyms:
     for tr in trs:
         tds= tr.findChildren("td")
         if (tds[0].get_text().isdigit()):
+            # could use some trimming
             courses[index] = {}
             courses[index]["CRN"] = tds[CRN].get_text().strip()
             courses[index]["course"] = tds[COURSE].get_text().strip()
@@ -64,9 +68,21 @@ for course in courseSyms:
             courses[index]["room"] = tds[ROOM].get_text().replace('\n', '|')
             courses[index]["instructor"] = tds[INSTR].get_text().replace('\n', '')
             courses[index]["seatsAvail"] = tds[SEATS].get_text().strip()
+            courses[index]["waitList"] = tds[WAIT].get_text().strip();
             courses[index]["seatsRes"] = tds[RES].get_text().strip()
             courses[index]["prm"] = tds[PRM].get_text().strip()
             courses[index]["CCC"] = tds[CCC].get_text().strip()
+            desc = tds[DESC].find('a')
+            if desc is not None:
+                courses[index]["descLink"] = str(desc.get('href'))
+            else:
+                courses[index]["descLink"] = "NONE"
+            guide = tds[GUIDE].find('a')
+            if guide is not None:
+                courses[index]["guideLink"] = str(guide.get('href'))
+            else:
+                courses[index]["guideLink"] = "NONE"
+            courses[index]["bookTerm"] = str(tds[BOOKS].find('form').find('input', {'name':'courseXml'}).get('value'))[-32:][:3]
             index = index + 1
 
     br.back()
@@ -77,6 +93,7 @@ f = open('scrape/database.log', 'a')
 
 # Success
 if(int(r.status_code) == 200):
+    print "Success"
     output = "updated successfully on "
     output += str(datetime.datetime.now().date())
     output += " at "
@@ -86,6 +103,9 @@ if(int(r.status_code) == 200):
 
 # Failure
 else:
+    print "Failure"
+    print "Status Code: " + str(r.status_code)
+    print "Content: " + str(r.content)
     output = "failed update on "
     output += str(datetime.datetime.now().date())
     output += " at "

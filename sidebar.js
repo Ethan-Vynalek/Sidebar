@@ -217,7 +217,7 @@ $(document).ready(function(){
         var startMinute = Number(sm);
         var endHour = Number(eh);
         var endMinute = Number(em);
-        startHour = (startHour > endHour) ? 12 - startHour : startHour;
+        startHour = (startHour > endHour) ? 0 - (12 - startHour) : startHour;
         var difference;
 
         if(startHour === endHour && startMinute === endMinute) return 0;
@@ -285,6 +285,7 @@ $(document).ready(function(){
                 // use this timeDifference value to figure out the middle
                 // to put the course name
                 var td = timeDifference(startHour, startMinute, endHour, endMinute);
+
                 var mid = Math.floor(td);
 
                 while(td !== 0) {
@@ -292,7 +293,14 @@ $(document).ready(function(){
                     if(td*2 === mid + 1) {
                         divs.push("text");
                     }
-                    divs.push(prefix + startHour + startMinute + ampm);
+                    if (ampm === "PM" &&
+                       (Number(startHour) > Number(endHour) || Number(endHour) === 12) &&
+                       Number(startHour) !== 12) {
+                        divs.push(prefix + startHour + startMinute + "AM");
+                    }
+                    else {
+                        divs.push(prefix + startHour + startMinute + ampm);
+                    }
 
                     if(startMinute === "30") {
                         startMinute = "";
@@ -325,12 +333,25 @@ $(document).ready(function(){
             classObj.prm = tds[9].textContent.trim();
             classObj.CCC = tds[10].textContent.trim();
 
-            storage.get(function(result){
-                obj[classObj.CRN] = classObj;
-                storage.set(obj, function() {
-                    updateCalendar();
+            var conflict = false;
+            var cTimes = parseTime(classObj.time.substring(1, classObj.time.length - 1).split("|"));
+            for (i in cTimes) {
+                var cTime = cTimes[i];
+                if (cTime.trim() !== "text" && $(cTime).css("background-color").trim() !== "rgb(255, 255, 255)") {
+                    alert("Cannot add " + classObj.course + " because another class is already scheduled for that time.");
+                    conflict = true;
+                    break;
+                }
+            }
+
+            if(!conflict) {
+                storage.get(function(result){
+                    obj[classObj.CRN] = classObj;
+                    storage.set(obj, function() {
+                        updateCalendar();
+                    });
                 });
-            });
+            }
         }
         else if($(this).val() === "Remove") {
             var crn = $(this).parent("tr").children()[0].textContent;
