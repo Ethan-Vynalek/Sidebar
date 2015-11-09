@@ -5,51 +5,8 @@
     <meta charset="utf-8">
     <title>Sidebar Test</title>
     <script src="https://apis.google.com/js/client.js"></script>
-    <script type="text/javascript">
-        
-        var ApiKey = 'AIzaSyBj8beZN35sBkhc6_Dn5_Gymgq8_AJ0liM';
-        var scopes = 'https://www.googleapis.com/auth/calendar';
-        var clientId = '637150883276-n09l4a128cufftk53o4otsgc4n1vopnt.apps.googleusercontent.com';
-        
-        function handleClientLoad() {
-            gapi.client.setApiKey(apiKey);
-            window.setTimeout(checkAuth, 1);
-        }
-        
-        function checkAuth() {
-            gapi.auth.authorize( {client_id: clientId, scope: scopes, immediate: true), handleAuthResult );
-        }
-        
-        function handleAuthResult(authResult) {
-            var auth_button = document.getElementById('auth-button');
-            if (authResult && !authResult.error) {
-                auth_button.style.visibility = 'hidden';
-                makeApiCall();
-            } else {
-                auth_button.style.visibility = '';
-                auth_button.onclick = handleAuthClick;
-            }
-        }
-        
-        function handleAuthClick(event) {
-            gapi.auth.authorize( {client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-            return false;
-        }
-        
-        // Load API and make API call.
-        function makeApiCall() {
-            gapi.client.load('calendar', 'v3', function() {
-                var request = gapi.client.calendar.events.insert({
-                    'calendarId': 'primary',
-                    //'resource': resource
-                });
-                request.execute(function(resp) {
-                    console.log(resp);
-                });
-            });
-        }
-        
-    </script>
+    <!-- Includes the Google Calendar Javascript client library and API -->
+    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
   </head>
 
   <body>
@@ -58,9 +15,6 @@
 
     <!-- Includes jQuery 2.1.0 for use by script.js -->
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-    
-    <!-- Includes the Google Calendar Javascript client library and API -->
-    <!-- <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script> -->
     
     <!-- Includes the jQuery UI toolset -->
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
