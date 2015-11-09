@@ -37,5 +37,12 @@
             "js": ["jquery/jquery.min.js", "sidebar.js", "jquery/jquery-ui.min.js", "search-logic/logic.js"]
         }
     ],
-    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Cnua7oSWYofl4tUKSIKvreyE+DrcotFH17ZlnJzHdCi7o8Dt6rEEHr71JUclbQbatWDZY9AN6VVSr/adBSLBEBcE7VcbfzAVmWo4sdpkM/x/+q7o7BnG9PQeIrKlq0P29owutr4n21OM9c8MxdV1T5dNZP+fw90dXKJCotnoJnwGtRo6m6vUziTr8fd45lqoeS4htnEpTTPTK40hBht70orJK5oUirFSQpOvYPLBd4UVLPbKuI59zwjR5Vz+xxor8DsDJ3vafzfMmXqxCdgIZvt9KZ+Q4xQkr5goNH+ZlqWmAoje1gEtjBVQ9zSTC3sOQuojoM2ViwX52tgkPoxTQIDAQAB"
+
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Cnua7oSWYofl4tUKSIKvreyE+DrcotFH17ZlnJzHdCi7o8Dt6rEEHr71JUclbQbatWDZY9AN6VVSr/adBSLBEBcE7VcbfzAVmWo4sdpkM/x/+q7o7BnG9PQeIrKlq0P29owutr4n21OM9c8MxdV1T5dNZP+fw90dXKJCotnoJnwGtRo6m6vUziTr8fd45lqoeS4htnEpTTPTK40hBht70orJK5oUirFSQpOvYPLBd4UVLPbKuI59zwjR5Vz+xxor8DsDJ3vafzfMmXqxCdgIZvt9KZ+Q4xQkr5goNH+ZlqWmAoje1gEtjBVQ9zSTC3sOQuojoM2ViwX52tgkPoxTQIDAQAB",
+
+    "oauth2": 
+        {
+            "client_id": "637150883276-n09l4a128cufftk53o4otsgc4n1vopnt.apps.googleusercontent.com",
+	    "scopes": ["https://www.googleapis.com/auth/calendar"]
+	}
 }
